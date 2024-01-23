@@ -24,7 +24,13 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.jwt')),
+    #path('users/', include('djoser.urls.')),
+
+
+
+
     path('pruebas/', include('pruebas.urls')),
+    path('pru/', include('pruebas.urls')),
     path('criterios/', include('criterios.urls')),
     path('subcriterios/', include('sub_criterios.urls')),
     path('indicadores/', include('indicadores.urls')),

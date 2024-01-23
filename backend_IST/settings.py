@@ -142,7 +142,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Guayaquil'
 
 USE_I18N = True
 
@@ -174,7 +174,7 @@ REST_FRAMEWORK = {
 
 SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('JWT',),
-    #'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
     #'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     #'AUTH_TOKEN_CLASSES': (
     #    'rest_framework_simplejwt.tokens.AccessToken',
@@ -198,6 +198,9 @@ DJOSER = {
         'user_create':'accounts.serializers.UserCreateSerializer',
         'user':'accounts.serializers.UserCreateSerializer',
         'user_delete':'djoser.serializers.UserDeleteSerializer',
+        #
+        #'current_user': 'djoser.serializers.UserSerializer',
+        #'token': 'djoser.serializers.TokenSerializer',
 
 
     }
