@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'evidencias',
     'documentos_acreditacion',
     'general',
+    'biblioteca',
   
  
 
@@ -174,7 +175,7 @@ REST_FRAMEWORK = {
 
 SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('JWT',),
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1500),
     #'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     #'AUTH_TOKEN_CLASSES': (
     #    'rest_framework_simplejwt.tokens.AccessToken',
@@ -196,13 +197,16 @@ DJOSER = {
     'SEND_ACTIVATION_EMAIL': True,
     'SERIALIZERS':{
         'user_create':'accounts.serializers.UserCreateSerializer',
+        #'user_create':'accounts.usuario_serializador_creado',
+        
         'user':'accounts.serializers.UserCreateSerializer',
+        #'user':'accounts.serializers.usuario_serializador_creado',
+
+
         'user_delete':'djoser.serializers.UserDeleteSerializer',
         #
-        #'current_user': 'djoser.serializers.UserSerializer',
+        'current_user': 'accounts.serializers.usuario_serializador_creado',
         #'token': 'djoser.serializers.TokenSerializer',
-
-
     }
 }
 

@@ -11,8 +11,8 @@ class Coor_Carrera(models.Model):
     fecha_creacion = models.DateField()
     observacion = models.TextField(null=True, blank=True)
     digitador = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
-    #def __str__(self):
-    #    return "{} ".format(self.nombre)
+    def __str__(self):
+        return "{} ".format(self.nombre)
    
 
 class Coor_Institucionales(models.Model):
@@ -22,8 +22,8 @@ class Coor_Institucionales(models.Model):
     fecha_creacion = models.DateField()
     observacion = models.TextField(null=True, blank=True)
     digitador = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
-    #def __str__(self):
-    #    return "{} ".format(self.nombre)
+    def __str__(self):
+        return "{} ".format(self.nombre)
    
 
 class Otras_Comisiones(models.Model):
@@ -33,7 +33,7 @@ class Otras_Comisiones(models.Model):
     fecha_creacion = models.DateField()
     observacion = models.TextField(null=True, blank=True)
     digitador = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
-    #def __str__(self):
-    #    return "{} ".format(self.nombre)
+    def __str__(self):
+        return "{} ".format(self.nombre)
    
 

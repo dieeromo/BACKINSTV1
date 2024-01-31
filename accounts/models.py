@@ -37,7 +37,7 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     is_estudiante = models.BooleanField(default=False)
     is_administrativo1 = models.BooleanField(default=False)
     is_administrativo2 = models.BooleanField(default=False)
-    is_administrativo3 = models.BooleanField(default=False)
+    is_administrativo3 = models.BooleanField(default=False) # Sirva para habilitar el registro de documentos de acreditacion
     is_visitante = models.BooleanField(default=False)
 
     is_active = models.BooleanField(default=True)

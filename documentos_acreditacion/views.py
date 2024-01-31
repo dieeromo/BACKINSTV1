@@ -14,24 +14,43 @@ from criterios.models import Criterios, ProcesoEvaluacion
 from general.models import Coor_Carrera, Coor_Institucionales, Otras_Comisiones
 from accounts.models import UserAccount
 
+from django.contrib.auth.decorators import login_required
+
 
 @api_view(['POST'])
 #@permission_classes([IsAuthenticated])
 def registroDocumentosAcreditacion(request,id_evidencia, id_responsable):
-    print(id_evidencia)
+    data = request.data
     evidencia = Evidencias.objects.get(id=id_evidencia)
     criterio = Criterios.objects.get(id=evidencia.criterio.id)
     subcriterio = SubCriterios.objects.get(id=evidencia.subCriterio.id)
     indicador = Indicadores.objects.get(id=evidencia.indicador.id)
     proceso = ProcesoEvaluacion.objects.get(id= evidencia.procesoEvaluacion.id)
+    if data['carrera'] :
+        carrera = Coor_Carrera.objects.get(id=data['carrera'])       
+    else:
+        carrera = Coor_Carrera.objects.get(nombre='NA')
+        
 
-    carrera = Coor_Carrera.objects.get(id=1)
-    coor_ist = Coor_Institucionales.objects.get(id=1)
-    otras = Otras_Comisiones.objects.get(id=1)
+    if data['coor_institucionales'] :
+        coor_ist = Coor_Institucionales.objects.get(id=data['coor_institucionales'])
+    else:
+        coor_ist = Coor_Institucionales.objects.get(nombre='NA')
+
+    if data['otras_comisiones'] :
+        print("******** SI SELEC")
+        otras = Otras_Comisiones.objects.get(id=data['otras_comisiones'])
+    else:
+        print("******** NO SELEC")
+        otras = Otras_Comisiones.objects.get(nombre='NA')
+        
+   
+    
 
     fecha_actual = datetime.now().date()
     responsable = UserAccount.objects.get(id=id_responsable)
-    data = request.data
+    digitador = UserAccount.objects.get(id=data['digitador'])
+   
     try:
         documento = Documentos_acreditacion.objects.create(
             criterio = criterio,
@@ -44,20 +63,18 @@ def registroDocumentosAcreditacion(request,id_evidencia, id_responsable):
             estadoVF = True,
             fecha_creacion = fecha_actual,
             observacion = data['observacion'],
-            digitador = responsable,
+            #digitador = responsable,
+            digitador = digitador,
             responsable = responsable,
             procesoEvaluacion = proceso,
             iniciadoVF = False,
             cumpleVF = False,
             fecha_limite= data['fecha_limite'],
-
-            #coor_carrera = ,
+    
+            coor_carrera = carrera,
             coor_institucionales = coor_ist,
             otras_comisiones = otras,
             archivo = request.FILES.get('archivo')
-
-
-
         )
 
         serializer = documentos_acreditacion_Serializer(documento, many=False)
@@ -70,10 +87,11 @@ def registroDocumentosAcreditacion(request,id_evidencia, id_responsable):
 
 
 @api_view(['GET'])
+@login_required()
 def listDocumentosAcreditacionFilter(request,id):
     docs_acred = Documentos_acreditacion.objects.filter(evidencia=id).order_by('id') 
     serializer = documentos_acreditacion_Serializer(docs_acred, many=True)
-    print(serializer.data)
+    #print(serializer.data)
 
     return Response(serializer.data)
 
@@ -101,6 +119,8 @@ def uploadArchivoDocumento(request):
 def listDocumentosAcreditacionAll(request):
 
     docs_acred = Documentos_acreditacion.objects.filter().order_by('criterio','subCriterio','indicador') 
+    #docs_acred = Documentos_acreditacion.objects.filter()
     serializer = documentos_acreditacion_Serializer(docs_acred, many=True)
+   #print(serializer.data)
 
     return Response(serializer.data)

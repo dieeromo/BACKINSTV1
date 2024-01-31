@@ -21,7 +21,7 @@ class Evidencias(models.Model):
     cumpleVF = models.BooleanField(default = False)
     fecha_limite = models.DateField(blank= True, null =True)
 
-    #def __str__(self):
-    #    return "{} - {} -- {}".format(self.numeracion,  self.evidencia,self.estadoVF)
+    def __str__(self):
+        return "{} - {} -- {}".format(self.numeracion,  self.evidencia,self.estadoVF)
    
 

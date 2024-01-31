@@ -38,6 +38,7 @@ urlpatterns = [
     path('documentos_acreditacion/', include('documentos_acreditacion.urls')),
     path('general/', include('general.urls')),
     path('account/', include('accounts.urls')),
+    path('biblioteca/', include('biblioteca.urls')),
     
     #path('auth/', include('djoser.social.urls')),
 ]
