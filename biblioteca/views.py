@@ -78,5 +78,15 @@ def registroObra(request):
         message = {'detalle': 'algo esta mal en el registro de la obra'}
 
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
+    
+
+@api_view(['GET'])
+#@login_required()
+def filtro_obras_libros(request):
+    obras_libros = Obras.objects.filter().order_by('id') 
+    serializer = obras_Serializer(obras_libros, many=True)
+    return Response(serializer.data)
+
+
 
 

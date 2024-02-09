@@ -40,6 +40,8 @@ urlpatterns = [
     path('account/', include('accounts.urls')),
     path('biblioteca/', include('biblioteca.urls')),
     
+    path('inventario/', include('inventario.urls')),
+    
     #path('auth/', include('djoser.social.urls')),
 ]
 

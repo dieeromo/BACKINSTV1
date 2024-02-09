@@ -7,5 +7,6 @@ urlpatterns = [
     path('list/categoria_obra/', views.listCategoria_obras),
     path('list/tipo_obras/', views.listTipo_obras),
     path('list/tipo_material/', views.listTipo_material),
+    path('list/obras/', views.filtro_obras_libros),
 
 ]

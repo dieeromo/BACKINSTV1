@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'documentos_acreditacion',
     'general',
     'biblioteca',
+    'inventario',
   
  
 
