@@ -32,6 +32,7 @@ def list_estadoInventario(request):
 def list_ubicacionInventario(request):
     list = UbicacionInventario.objects.filter().order_by('id') 
     serializer = ubicacionInventario_Serializer(list, many=True)
+    print(serializer.data)
     return Response(serializer.data)
 
 
@@ -41,7 +42,7 @@ def list_ubicacionInventario(request):
 @login_required()
 def list_inventarioIST(request):
     list = InventarioIST.objects.filter().order_by('id') 
-    serializer = estadoInventario_Serializer(list, many=True)
+    serializer = inventarioIST_Serializer(list, many=True)
     return Response(serializer.data)
 
 

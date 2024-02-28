@@ -85,7 +85,7 @@ def registroDocumentosAcreditacion(request,id_evidencia, id_responsable):
 
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
-
+#FILTRO POR EVIDENCIA
 @api_view(['GET'])
 @login_required()
 def listDocumentosAcreditacionFilter(request,id):
@@ -95,6 +95,16 @@ def listDocumentosAcreditacionFilter(request,id):
 
     return Response(serializer.data)
 
+
+#FILTRO POR DOCENTE
+@api_view(['GET'])
+@login_required()
+def listDocumentosAcreditacionFilterDocente(request,id):
+    print(id)
+    docs_acred = Documentos_acreditacion.objects.filter(responsable=id).order_by('id') 
+    serializer = documentos_acreditacion_Serializer(docs_acred, many=True)
+    print(serializer.data)
+    return Response(serializer.data)
 
 
 

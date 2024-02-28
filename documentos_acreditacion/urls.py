@@ -8,4 +8,10 @@ urlpatterns = [
     path('subir_archivo/', views.uploadArchivoDocumento),
 
     path('list/all/', views.listDocumentosAcreditacionAll),
+
+    path('list/filter/docente/<int:id>/', views.listDocumentosAcreditacionFilterDocente),
+
+  
+
+    
 ]
