@@ -122,6 +122,18 @@ def uploadArchivoDocumento(request):
 
     return Response('pdf subido')
 
+@api_view(['DELETE'])
+def eliminarDocumento(request,id):
+    
+    try:
+        arc = Documentos_acreditacion.objects.get(id=id)
+        arc.delete()
+        return Response('Documento eliminado')
+    except:
+        message = {'detalle': 'algo esta mal en el registro del cliente'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 
 

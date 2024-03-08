@@ -5,6 +5,7 @@ from .models import Documentos_acreditacion
 
 class documentos_acreditacion_Serializer(serializers.ModelSerializer):
     digitador = serializers.CharField(source='digitador.first_name', read_only=True)
+    digitador_id = serializers.CharField(source='digitador.id', read_only=True)
     responsable = serializers.CharField(source='responsable.get_full_name', read_only=True)
     responsable_id = serializers.CharField(source='responsable.id', read_only=True)
     # este es un comentario de prueba
