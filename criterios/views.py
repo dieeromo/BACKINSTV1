@@ -11,7 +11,7 @@ from .serializers import criterios_Serializer, procesosEvaluacion_Serializer
 
 @api_view(['GET'])
 #@permission_classes([IsAuthenticated])
-@login_required()
+#@login_required()
 def listCriterios(request):
     criterios = Criterios.objects.filter().order_by('id') 
     serializer = criterios_Serializer(criterios, many=True)

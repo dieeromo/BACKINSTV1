@@ -51,20 +51,17 @@ INSTALLED_APPS = [
     'general',
     'biblioteca',
     'inventario',
-  
- 
-
-
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    'http://192.168.0.86:3002',
     'http://localhost:3000',
     'http://0.0.0.0:3000',
+    'http://192.168.0.86:3002',
     'http://192.168.0.118:3002',
     'http://192.168.13.101:3002',
     'http://192.168.10.244:3000',
 ]
+CORS_ALLOW_CREDENTIALS = True   # oooojo con ESTA LA PUSE PARA NEXT
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',  # para corsheader
@@ -119,6 +116,9 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'diee.romo@gmail.com'
 EMAIL_HOST_PASSWORD = 'bgnj xepk ffjb otzo'
 EMAIL_USE_TLS = True
+
+DOMAIN = 'localhost:3000'
+SITE_NAME = 'ISTVIF'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -181,6 +181,7 @@ SIMPLE_JWT = {
     #'AUTH_TOKEN_CLASSES': (
     #    'rest_framework_simplejwt.tokens.AccessToken',
     #)
+    
 }
 
 DJOSER = {
