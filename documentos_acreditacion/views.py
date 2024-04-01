@@ -124,7 +124,6 @@ def uploadArchivoDocumento(request):
 
 @api_view(['DELETE'])
 def eliminarDocumento(request,id):
-    
     try:
         arc = Documentos_acreditacion.objects.get(id=id)
         arc.delete()

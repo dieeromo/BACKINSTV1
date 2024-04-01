@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from .models import UserAccount
-from .serializers import UserCreateSerializer
+from .serializers import UserCreateSerializer, usuario_serializador_creado
 
 @api_view(['GET'])
 #@permission_classes([IsAuthenticated])
@@ -14,6 +14,7 @@ def listUserAccount(request):
     usuarios = UserAccount.objects.filter().order_by('id')
   
   
-    serializer = UserCreateSerializer(usuarios, many=True)
-    #print(serializer.data)
+    #serializer = UserCreateSerializer(usuarios, many=True)
+    serializer = usuario_serializador_creado(usuarios, many=True)
+    print(serializer.data)
     return Response(serializer.data)
