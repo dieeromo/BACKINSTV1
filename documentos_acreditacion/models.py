@@ -36,7 +36,7 @@ class Documentos_acreditacion(models.Model):
     coor_institucionales =  models.ForeignKey(Coor_Institucionales, on_delete=models.CASCADE,null=True, blank=True)
     otras_comisiones =  models.ForeignKey(Otras_Comisiones, on_delete=models.CASCADE,null=True, blank=True)
 
-    archivo = models.FileField(upload_to='pdfs/', validators=[validate_pdf_size])
+    archivo = models.FileField(upload_to='pdfs/', validators=[validate_pdf_size], null=True, blank=True)
 
     
     def __str__(self):

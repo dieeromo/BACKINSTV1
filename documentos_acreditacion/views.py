@@ -92,7 +92,6 @@ def listDocumentosAcreditacionFilter(request,id):
     docs_acred = Documentos_acreditacion.objects.filter(evidencia=id).order_by('id') 
     serializer = documentos_acreditacion_Serializer(docs_acred, many=True)
     #print(serializer.data)
-
     return Response(serializer.data)
 
 
@@ -111,30 +110,31 @@ def listDocumentosAcreditacionFilterDocente(request,id):
 
 
 
+
+
 @api_view(['PUT'])
-#@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def uploadArchivoDocumento(request):
+    print('petionnnn')
+    print(request)
     data = request.data
     archivo_id = data['id']
-    arc = Documentos_acreditacion.objects.get(id=archivo_id)
-    arc.archivo = request.FILES.get('archivo')
-    arc.save()
-
-    return Response('pdf subido')
-
-@api_view(['DELETE'])
-def eliminarDocumento(request,id):
+    print('iddddddß')
+    print(archivo_id)
     try:
-        arc = Documentos_acreditacion.objects.get(id=id)
-        arc.delete()
-        return Response('Documento eliminado')
+        arc = Documentos_acreditacion.objects.get(id=archivo_id)
+    except Documentos_acreditacion.DoesNotExist:
+        return Response({'error':'El documento no existe'})
+    
+    try:
+        arc.archivo = request.FILES.get('archivo')
+        arc.save()
+        return Response('pdf subido')
     except:
-        message = {'detalle': 'algo esta mal en el registro del cliente'}
-        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+        return Response('falla al subir el pdf')
 
 
-
-
+#DEVUELVE TODOS LOS DOCUMENTOS
 
 @api_view(['GET'])
 def listDocumentosAcreditacionAll(request):
@@ -145,3 +145,48 @@ def listDocumentosAcreditacionAll(request):
    #print(serializer.data)
 
     return Response(serializer.data)
+
+
+@api_view(['DELETE'])
+def deleteEntradaDocumento(request):
+    data = request.data 
+    try: 
+        documento = Documentos_acreditacion.objects.get(id=data['id'])
+        documento.delete()
+        return Response ({'mensaje':'El documento  se elimino'})
+    except Documentos_acreditacion.DoesNotExist:
+        return Response({'error':'El documento no existe'})
+    except Exception as e:
+        return Response ({'error':str(e)}, status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['PUT'])
+def putNombreDocumento(request):
+    data = request.data 
+    try: 
+        documento =Documentos_acreditacion.objects.get(id=data['id'])
+
+    except Documentos_acreditacion.DoesNotExist:
+        return Response({'error': 'El Documento no existe.'}, status=status.HTTP_404_NOT_FOUND)
+ 
+    try:
+        Documentos_acreditacion.objects.filter(id=data['id']).update(
+            documento = data['documento'],
+        )
+        return Response(status=status.HTTP_200_OK)
+    except:
+        message = {'faaalla'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['DELETE'])
+def deleteArchivoAcreditacion(request):
+        data = request.data
+        try:
+            # Obtén el documento por su ID
+            documento = Documentos_acreditacion.objects.get(id=data['id'])
+        except Documentos_acreditacion.DoesNotExist:
+            return Response({"message": "Documento no encontrado"}, status=status.HTTP_404_NOT_FOUND)
+        # Elimina el archivo del sistema de archivos
+        documento.archivo.delete()
+        # Elimina la entrada de la base de datos
+        #documento.delete()
+        return Response({"message": "Documento eliminado exitosamente"})

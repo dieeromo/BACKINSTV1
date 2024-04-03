@@ -3,6 +3,6 @@ from . import views
 
 
 urlpatterns = [
-    path('list_por_subcriterio/<int:id>/', views.listEvidencias_filtro_indicador),
+    path('list_por_indicador/<int:id>/', views.listEvidencias_filtro_indicador),
 
 ]
