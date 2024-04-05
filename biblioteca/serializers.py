@@ -3,21 +3,29 @@ from .models import CategoriaObra, TipoObra, TipoMaterial, EstadoObra, Obras
 
 
 class categoriaObra_Serializer(serializers.ModelSerializer):
+    value = serializers.CharField(source='id', read_only=True)
+    label = serializers.CharField(source='categoria', read_only=True)
     class Meta:
         model = CategoriaObra
         fields = "__all__"
 
 class tipoObra_Serializer(serializers.ModelSerializer):
+    value = serializers.CharField(source='id', read_only=True)
+    label = serializers.CharField(source='tipo', read_only=True)
     class Meta:
         model = TipoObra
         fields = "__all__"
 
 class tipoMaterial_Serializer(serializers.ModelSerializer):
+    value = serializers.CharField(source='id', read_only=True)
+    label = serializers.CharField(source='material', read_only=True)
     class Meta:
         model = TipoMaterial
         fields = "__all__"
 
 class estadoObra_Serializer(serializers.ModelSerializer):
+    value = serializers.CharField(source='id', read_only=True)
+    label = serializers.CharField(source='estado', read_only=True)
     class Meta:
         model = EstadoObra
         fields = "__all__"

@@ -14,7 +14,7 @@ from accounts.models import UserAccount
 
 
 @api_view(['GET'])
-#@login_required()
+@login_required()
 def listCategoria_obras(request):
     cat_obras = CategoriaObra.objects.filter().order_by('id') 
     serializer = categoriaObra_Serializer(cat_obras, many=True)
@@ -22,7 +22,7 @@ def listCategoria_obras(request):
 
 
 @api_view(['GET'])
-#@login_required()
+@login_required()
 def listTipo_obras(request):
     tipo_obras = TipoObra.objects.filter().order_by('id') 
     serializer = tipoObra_Serializer(tipo_obras, many=True)
@@ -30,10 +30,18 @@ def listTipo_obras(request):
 
 
 @api_view(['GET'])
-#@login_required()
+@login_required()
 def listTipo_material(request):
     tipo_material = TipoMaterial.objects.filter().order_by('id') 
     serializer = tipoMaterial_Serializer(tipo_material, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+@login_required()
+def listEstado_obra(request):
+    estadoObra = EstadoObra.objects.filter().order_by('id') 
+    serializer = estadoObra_Serializer(estadoObra, many=True)
     return Response(serializer.data)
 
 
@@ -45,6 +53,7 @@ def listTipo_material(request):
 def registroObra(request):
 
     data = request.data
+    print(data['digitador'])
     categoria = CategoriaObra.objects.get(id=data['categoria'])
     tipo_obra = TipoObra.objects.get(id=data['tipo_obra'])
     tipo_material = TipoMaterial.objects.get(id=data['tipo_material'])
@@ -65,7 +74,7 @@ def registroObra(request):
             tipo_obra = tipo_obra,
             tipo_material = tipo_material,
             estado_obra = estado_obra,
-           # estado_activo = True,
+            estado_activo = True,
 
             digitador = digitador,
             observacion = data['observacion']
