@@ -6,9 +6,10 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth.decorators import login_required
 
-from .models import  CategoriaObra, TipoObra, TipoMaterial, EstadoObra, Obras
+from .models import  CategoriaObra, TipoObra, TipoMaterial, EstadoObra, Obras, Autores
+from .models import  ObrasAutores
 from .serializers import  categoriaObra_Serializer, tipoObra_Serializer, tipoMaterial_Serializer
-from .serializers import estadoObra_Serializer, obras_Serializer
+from .serializers import estadoObra_Serializer, obras_Serializer, autores_Serializer, obrasAutores_Serializer
 from accounts.models import UserAccount
 # Create your views here.s
 
@@ -99,3 +100,136 @@ def filtro_obras_libros(request):
 
 
 
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+@login_required()
+def registroAutor(request):
+    data = request.data
+    digitador = UserAccount.objects.get(id=data['digitador'])
+    print (data)
+    
+    try:
+        autor = Autores.objects.create(
+            nombres = data['nombres'],
+            estado = data['estado'],
+            digitador = digitador,            
+            observacion = data['observacion']
+        )
+
+        serializer = autores_Serializer(autor, many=False)
+
+        return Response(serializer.data)
+    except:
+        message = {'detalle': 'algo esta mal en el registro de la obra'}
+
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['GET'])
+@login_required()
+def listAutores(request):
+    autores = Autores.objects.filter().order_by('-id') 
+    serializer = autores_Serializer(autores, many=True)
+    return Response(serializer.data)
+
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+@login_required()
+def registerObraAutor(request):
+    data = request.data
+ 
+    autor_id = Autores.objects.get(id=data['autor_id'])
+    obra_id = Obras.objects.get(id=data['obra_id'])
+    digitador = UserAccount.objects.get(id=data['digitador'])
+  
+    try:
+        obrasAutores = ObrasAutores.objects.create(
+            autor_id = autor_id,
+            obra_id = obra_id,
+            digitador = digitador,            
+            observacion = data['observacion']
+        )
+
+        serializer = obrasAutores_Serializer(obrasAutores, many=False)
+
+        return Response(serializer.data)
+    except:
+        message = {'detalle': 'algo esta mal en el registro de la obra'}
+
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+@login_required()
+def listAutores_obras_todos(request):
+    #try:
+    listaObrasAutores = ObrasAutores.objects.filter().order_by('-id') 
+    serializer = obrasAutores_Serializer( listaObrasAutores , many=True)
+    return Response(serializer.data)
+    #except:
+    #    message = {'detalle': 'Algo esta mal en la peticion'}
+    #    return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def uploadObraDocumento(request):
+
+    data = request.data
+    print('data',data)
+    archivo_id = data['id']
+  
+    try:
+        arc = Obras.objects.get(id=archivo_id)
+    except Obras.DoesNotExist:
+        return Response({'error':'El documento no existe'})
+    
+    try:
+        arc.archivo = request.FILES.get('archivo')
+        arc.save()
+        return Response('pdf subido')
+    except:
+        return Response('falla al subir el pdf')
+
+
+
+@api_view(['GET'])
+@login_required()
+def FilterAutores_obras(request):
+    data = request.data
+    #try:
+    listaObrasAutores = ObrasAutores.objects.filter(nombres=data['autor']).order_by('-id') 
+    serializer = obrasAutores_Serializer( listaObrasAutores , many=True)
+    return Response(serializer.data)
+    #except:
+    #    message = {'detalle': 'Algo esta mal en la peticion'}
+    #    return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+#@login_required()
+def FilterTitulo_obras(request, titulo):
+    print('titulo',titulo)
+  
+    #try:
+    listaObrasTitulo = Obras.objects.filter(titulo__icontains=titulo).order_by('-id') 
+    serializer = obras_Serializer( listaObrasTitulo , many=True)
+    return Response(serializer.data)
+    #except:
+    #    message = {'detalle': 'Algo esta mal en la peticion'}
+    #    return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+#@login_required()
+def FilterTitulo_obras_id(request, id):
+    listaObrasTitulo = Obras.objects.filter(id=id).order_by('-id') 
+    serializer = obras_Serializer( listaObrasTitulo , many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def FilterAutores_obras_idObra(request,id):
+    listaObrasAutores = ObrasAutores.objects.filter(obra_id= id).order_by('-id') 
+    serializer = obrasAutores_Serializer( listaObrasAutores , many=True)
+    return Response(serializer.data)

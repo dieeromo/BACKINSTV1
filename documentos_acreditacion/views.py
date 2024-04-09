@@ -115,12 +115,10 @@ def listDocumentosAcreditacionFilterDocente(request,id):
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def uploadArchivoDocumento(request):
-    print('petionnnn')
-    print(request)
+
     data = request.data
     archivo_id = data['id']
-    print('iddddddß')
-    print(archivo_id)
+  
     try:
         arc = Documentos_acreditacion.objects.get(id=archivo_id)
     except Documentos_acreditacion.DoesNotExist:
