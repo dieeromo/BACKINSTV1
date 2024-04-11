@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Coor_Carrera,Coor_Institucionales,Otras_Comisiones
+from .models import BolsaEmpleo
 
 
 class Coor_Carrera_Serializer(serializers.ModelSerializer):
@@ -26,3 +27,9 @@ class Otras_comisiones_Serializer(serializers.ModelSerializer):
         model = Otras_Comisiones
         fields = "__all__"
 
+
+class Bolsa_empleo_Serializer(serializers.ModelSerializer):
+    digitador_name = serializers.CharField(source='digitador.first_name', read_only=True)
+    class Meta:
+        model = BolsaEmpleo
+        fields = "__all__"

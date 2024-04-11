@@ -37,3 +37,14 @@ class Otras_Comisiones(models.Model):
         return "{} ".format(self.nombre)
    
 
+
+
+class BolsaEmpleo(models.Model):
+    institutcion = models.TextField()
+    descripcion = models.TextField()
+    fecha_limite = models.DateField(null=True, blank=True)
+    url = models.CharField(max_length=500, null=True, blank=True)
+    digitador = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
+    estadoVF = models.BooleanField(default = True)
+    telefono = models.CharField(max_length=120,null=True, blank = True)
+    email = models.CharField(max_length=120,null=True, blank = True)

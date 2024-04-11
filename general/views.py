@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework import viewsets, routers
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -6,7 +7,9 @@ from rest_framework import status
 
 
 from .models import Coor_Carrera, Coor_Institucionales, Otras_Comisiones
+from .models import BolsaEmpleo
 from .serializers import  Coor_Carrera_Serializer, Coor_Institucionales_Serializer, Otras_comisiones_Serializer
+from . serializers import Bolsa_empleo_Serializer
 @api_view(['GET'])
 #@permission_classes([IsAuthenticated])
 def listCoordinaciones_carrera(request):
@@ -27,6 +30,11 @@ def list_otras_comisiones(request):
     serializer = Otras_comisiones_Serializer(otras, many=True)
     return Response(serializer.data)
 
-#Mariela Arevalo de ipueran
 
-# 
+
+class BolsaEmpleo_ViewSet(viewsets.ModelViewSet):
+    queryset = BolsaEmpleo.objects.all().order_by('-id')
+    serializer_class = Bolsa_empleo_Serializer
+    
+router = routers.DefaultRouter()
+router.register(r'bolsaEmpleo', BolsaEmpleo_ViewSet)

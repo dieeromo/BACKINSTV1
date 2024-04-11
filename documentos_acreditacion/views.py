@@ -89,9 +89,9 @@ def registroDocumentosAcreditacion(request,id_evidencia, id_responsable):
 @api_view(['GET'])
 @login_required()
 def listDocumentosAcreditacionFilter(request,id):
-    docs_acred = Documentos_acreditacion.objects.filter(evidencia=id).order_by('id') 
+    docs_acred = Documentos_acreditacion.objects.filter(evidencia=id).order_by('-id') 
     serializer = documentos_acreditacion_Serializer(docs_acred, many=True)
-    #print(serializer.data)
+    print('datos',serializer.data)
     return Response(serializer.data)
 
 
