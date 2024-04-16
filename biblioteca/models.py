@@ -28,7 +28,7 @@ class Obras(models.Model):
     codigo = models.CharField(max_length=255)
     titulo = models.CharField(max_length=800)
     editorial = models.CharField(max_length=255)
-    autor = models.CharField(max_length=800)
+    autor = models.CharField(max_length=800, null=True, blank=True)
     anio_publicacion = models.IntegerField()
     tomo = models.IntegerField(null=True)
     ubicacion = models.CharField(max_length=600)  # donde esta alojado

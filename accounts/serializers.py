@@ -25,7 +25,7 @@ class usuario_serializador_creado(UserSerializer):
 
     class Meta:
         model = UserAccount
-        fields = ('id', 'email', 'first_name', 'last_name','is_rectora','is_investigacion','is_docente','is_administrativo3','label','value')
+        fields = ('id', 'email', 'first_name', 'last_name','is_rectora','is_investigacion','is_docente','is_administrativo3','label','value','is_adminBolsa','is_adminBiblioteca')
         #fields = '__all__'
 
 
