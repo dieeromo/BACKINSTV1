@@ -9,5 +9,6 @@ urlpatterns = [
     path('otras_comisiones/list/', views.list_otras_comisiones),
 
     path('be/', include(router.urls)),
+    path('be/lista/public/', views.listBolsaEmpleoPublic),
 
 ]

@@ -35,6 +35,12 @@ def list_otras_comisiones(request):
 class BolsaEmpleo_ViewSet(viewsets.ModelViewSet):
     queryset = BolsaEmpleo.objects.all().order_by('-id')
     serializer_class = Bolsa_empleo_Serializer
-    
 router = routers.DefaultRouter()
 router.register(r'bolsaEmpleo', BolsaEmpleo_ViewSet)
+
+
+@api_view(['GET'])
+def listBolsaEmpleoPublic(request):
+    lista = BolsaEmpleo.objects.filter().order_by('-id') 
+    serializer = Bolsa_empleo_Serializer(lista, many=True)
+    return Response(serializer.data)
