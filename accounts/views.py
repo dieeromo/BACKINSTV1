@@ -12,9 +12,16 @@ def listUserAccount(request):
   
 
     usuarios = UserAccount.objects.filter().order_by('id')
-  
-  
+   
     #serializer = UserCreateSerializer(usuarios, many=True)
     serializer = usuario_serializador_creado(usuarios, many=True)
-    print(serializer.data)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def listDocentes(request):
+    usuarios = UserAccount.objects.filter(is_docente = True).order_by('id')
+    #serializer = UserCreateSerializer(usuarios, many=True)
+    serializer = usuario_serializador_creado(usuarios, many=True)
     return Response(serializer.data)

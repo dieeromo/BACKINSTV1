@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework import serializers
+from rest_framework import serializers,routers, viewsets
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -52,12 +52,12 @@ def list_inventarioIST(request):
 #@permission_classes([IsAuthenticated])
 @login_required()
 def register_inventario(request):
-
     data = request.data
     tipo = TipoInventario.objects.get(id=data['tipo'])
     estado = EstadoInventario.objects.get(id=data['estado'])
     ubicacion = UbicacionInventario.objects.get(id=data['ubicacion'])
     asignado = UserAccount.objects.get(id = data['asignado'])  
+    digitador = UserAccount.objects.get(id = data['digitador'])  
     print(tipo)  
     print(estado)  
     print(ubicacion)
@@ -81,6 +81,7 @@ def register_inventario(request):
             estado = estado,
             ubicacion = ubicacion,
             asignado = asignado,
+            digitador = digitador,
             observacion = data['observacion']
         )
 
@@ -92,3 +93,14 @@ def register_inventario(request):
 
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
     
+
+
+
+
+
+class Inventario_ViewSet(viewsets.ModelViewSet):
+    queryset = InventarioIST.objects.all().order_by('-id')
+    serializer_class = inventarioIST_Serializer
+router = routers.DefaultRouter()
+router.register(r'inventario', Inventario_ViewSet)
+

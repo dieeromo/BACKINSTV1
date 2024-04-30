@@ -19,10 +19,8 @@ class UserCreateSerializer(UserCreateSerializer):
 class usuario_serializador_creado(UserSerializer):
     label = serializers.SerializerMethodField()
     value = serializers.CharField(source='id', read_only=True)
-
     def get_label(self, obj):
         return f"{obj.first_name} {obj.last_name}"
-
     class Meta:
         model = UserAccount
         fields = ('id', 'email', 'first_name', 'last_name','is_rectora','is_investigacion','is_docente','is_administrativo3','label','value','is_adminBolsa','is_adminBiblioteca')

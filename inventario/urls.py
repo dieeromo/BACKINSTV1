@@ -1,5 +1,6 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
+from .views import router
 
 
 urlpatterns = [
@@ -12,5 +13,7 @@ urlpatterns = [
 
     path('list_inventario/', views.list_inventarioIST),
     path('register_inventario/', views.register_inventario),
+
+     path('ist/', include(router.urls)),
 
 ]
