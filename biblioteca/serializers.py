@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import CategoriaObra, TipoObra, TipoMaterial, EstadoObra, Obras
-from .models import  Autores, ObrasAutores
+from .models import  Autores, ObrasAutores, Ubicacion_obras
 
 
 class categoriaObra_Serializer(serializers.ModelSerializer):
@@ -29,6 +29,13 @@ class estadoObra_Serializer(serializers.ModelSerializer):
     label = serializers.CharField(source='estado', read_only=True)
     class Meta:
         model = EstadoObra
+        fields = "__all__"
+
+class ubicacionObras_Serializer(serializers.ModelSerializer):
+    value = serializers.CharField(source='id', read_only=True)
+    label = serializers.CharField(source='ubicacion', read_only=True)
+    class Meta:
+        model = Ubicacion_obras
         fields = "__all__"
 
 

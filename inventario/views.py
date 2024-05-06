@@ -104,3 +104,6 @@ class Inventario_ViewSet(viewsets.ModelViewSet):
 router = routers.DefaultRouter()
 router.register(r'inventario', Inventario_ViewSet)
 
+
+
+

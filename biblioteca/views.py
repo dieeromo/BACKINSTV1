@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework import serializers
+from rest_framework import serializers, routers, viewsets
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -7,9 +7,9 @@ from rest_framework import status
 from django.contrib.auth.decorators import login_required
 
 from .models import  CategoriaObra, TipoObra, TipoMaterial, EstadoObra, Obras, Autores
-from .models import  ObrasAutores
+from .models import  ObrasAutores, Ubicacion_obras
 from .serializers import  categoriaObra_Serializer, tipoObra_Serializer, tipoMaterial_Serializer
-from .serializers import estadoObra_Serializer, obras_Serializer, autores_Serializer, obrasAutores_Serializer
+from .serializers import estadoObra_Serializer, obras_Serializer, autores_Serializer, obrasAutores_Serializer, ubicacionObras_Serializer
 from accounts.models import UserAccount
 # Create your views here.s
 
@@ -54,12 +54,13 @@ def listEstado_obra(request):
 def registroObra(request):
 
     data = request.data
-    print(data['digitador'])
+
     categoria = CategoriaObra.objects.get(id=data['categoria'])
     tipo_obra = TipoObra.objects.get(id=data['tipo_obra'])
     tipo_material = TipoMaterial.objects.get(id=data['tipo_material'])
     estado_obra = EstadoObra.objects.get(id = data['estado_obra'])    
     digitador = UserAccount.objects.get(id=data['digitador'])
+    ubicacion = Ubicacion_obras.objects.get(id=data['ubicacion'])
     
     try:
         documento = Obras.objects.create(
@@ -69,7 +70,8 @@ def registroObra(request):
             autor = data['autor'],
             anio_publicacion = data['anio_publicacion'],
             tomo = data['tomo'],
-            ubicacion = data['ubicacion'],
+           # ubicacion = data['ubicacion'],
+            ubicacion = ubicacion,
 
             categoria = categoria,
             tipo_obra = tipo_obra,
@@ -130,6 +132,10 @@ def listAutores(request):
     autores = Autores.objects.filter().order_by('-id') 
     serializer = autores_Serializer(autores, many=True)
     return Response(serializer.data)
+
+
+
+
 
 
 
@@ -233,3 +239,56 @@ def FilterAutores_obras_idObra(request,id):
     listaObrasAutores = ObrasAutores.objects.filter(obra_id= id).order_by('-id') 
     serializer = obrasAutores_Serializer( listaObrasAutores , many=True)
     return Response(serializer.data)
+
+
+
+@api_view(['DELETE'])
+def deleteObraEntrada(request):
+    data = request.data 
+    try: 
+        documento = Obras.objects.get(id=data['id'])
+        documento.delete()
+        return Response ({'mensaje':'El documento  se elimino'})
+    except Obras.DoesNotExist:
+        return Response({'error':'El documento no existe'})
+    except Exception as e:
+        return Response ({'error':str(e)}, status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
+
+class UbicacionObras_ViewSet(viewsets.ModelViewSet):
+    queryset = Ubicacion_obras.objects.all().order_by('-id')
+    serializer_class = ubicacionObras_Serializer
+router = routers.DefaultRouter()
+#router.register(r'ubicacion', UbicacionObras_ViewSet)
+
+
+
+class TipoObras_ViewSet(viewsets.ModelViewSet):
+    queryset = TipoObra.objects.all().order_by('-id')
+    serializer_class = tipoObra_Serializer
+router = routers.DefaultRouter()
+#router.register('tipo_obra', TipoObras_ViewSet)
+
+
+
+class CategoriasObras_ViewSet(viewsets.ModelViewSet):
+    queryset = CategoriaObra.objects.all().order_by('-id')
+    serializer_class = categoriaObra_Serializer
+router = routers.DefaultRouter()
+#router.register(r'categoria_obra', CategoriasObras_ViewSet)
+
+#class TipoMaterialObras_ViewSet(viewsets.ModelViewSet):
+#    queryset = TipoMaterial.objects.all().order_by('-id')
+#    serializer_class = tipoMaterial_Serializer
+#router = routers.DefaultRouter()
+#router.register(r'tipo_material_obra', TipoMaterialObras_ViewSet)
+
+
+class AutoresObras_ViewSet(viewsets.ModelViewSet):
+    queryset = Autores.objects.all().order_by('-id')
+    serializer_class = autores_Serializer
+router = routers.DefaultRouter()
+
+

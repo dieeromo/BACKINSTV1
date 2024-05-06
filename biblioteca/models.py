@@ -12,6 +12,7 @@ def validate_pdf_size(value):
 class CategoriaObra(models.Model): 
     categoria = models.CharField(max_length=255)
 
+
 #libro, revista, tesis
 class TipoObra(models.Model):
     tipo = models.CharField(max_length=255)
@@ -24,6 +25,32 @@ class TipoMaterial(models.Model):
 class EstadoObra(models.Model):
     estado = models.CharField(max_length=255)
 
+class Ubicacion_obras(models.Model):
+    ubicacion = models.CharField(max_length=255)
+
+class Obras1(models.Model):
+    codigo = models.CharField(max_length=255)
+    titulo = models.CharField(max_length=800)
+    editorial = models.CharField(max_length=255)
+    autor = models.CharField(max_length=800, null=True, blank=True)
+    anio_publicacion = models.IntegerField()
+    tomo = models.IntegerField(null=True)
+    ubicacion = models.CharField(max_length=600, null=True, blank=True)  # donde esta alojado
+    
+
+    categoria = models.ForeignKey(CategoriaObra, on_delete=models.CASCADE)
+    tipo_obra = models.ForeignKey(TipoObra, on_delete=models.CASCADE)
+    tipo_material = models.ForeignKey(TipoMaterial, on_delete=models.CASCADE)
+
+    estado_obra = models.ForeignKey(EstadoObra, on_delete=models.CASCADE)
+    
+    estado_activo = models.BooleanField(default=True)
+
+    digitador = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
+    observacion = models.TextField(null=True, blank=True)
+
+    archivo = models.FileField(upload_to='pdfs_biblioteca/', validators=[validate_pdf_size],null=True, blank=True)
+
 class Obras(models.Model):
     codigo = models.CharField(max_length=255)
     titulo = models.CharField(max_length=800)
@@ -31,7 +58,7 @@ class Obras(models.Model):
     autor = models.CharField(max_length=800, null=True, blank=True)
     anio_publicacion = models.IntegerField()
     tomo = models.IntegerField(null=True)
-    ubicacion = models.CharField(max_length=600)  # donde esta alojado
+    ubicacion =  models.ForeignKey(Ubicacion_obras, on_delete=models.CASCADE)
 
     categoria = models.ForeignKey(CategoriaObra, on_delete=models.CASCADE)
     tipo_obra = models.ForeignKey(TipoObra, on_delete=models.CASCADE)
@@ -63,9 +90,7 @@ class ObrasAutores(models.Model):
     obra_id = models.ForeignKey(Obras, on_delete=models.CASCADE)
     digitador = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
     observacion = models.TextField(null=True, blank=True)
-    fecha_creacion = models.DateTimeField(auto_now_add=True,)
-   
-
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return "{} - {}".format(self.autor_id,  self.obra_id)
 
