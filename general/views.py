@@ -10,6 +10,10 @@ from .models import Coor_Carrera, Coor_Institucionales, Otras_Comisiones
 from .models import BolsaEmpleo
 from .serializers import  Coor_Carrera_Serializer, Coor_Institucionales_Serializer, Otras_comisiones_Serializer
 from . serializers import Bolsa_empleo_Serializer
+
+from .models import DependenciasInstitucionales
+from .serializers import DependenciasInstitucionales_Serializer
+
 @api_view(['GET'])
 #@permission_classes([IsAuthenticated])
 def listCoordinaciones_carrera(request):
@@ -44,3 +48,11 @@ def listBolsaEmpleoPublic(request):
     lista = BolsaEmpleo.objects.filter().order_by('-id') 
     serializer = Bolsa_empleo_Serializer(lista, many=True)
     return Response(serializer.data)
+
+## DEPENDENCIAS
+
+class DependenciasInstitucionales_ViewSet(viewsets.ModelViewSet):
+    queryset = DependenciasInstitucionales.objects.all().order_by('-id')
+    serializer_class = DependenciasInstitucionales_Serializer
+router = routers.DefaultRouter()
+
