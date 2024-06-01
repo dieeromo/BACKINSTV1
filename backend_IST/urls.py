@@ -42,6 +42,7 @@ urlpatterns = [
     
     path('inventario/', include('inventario.urls')),
     path('pedi/', include('pedi.urls')),
+    path('peas/', include('peas.urls')),
     
     #path('auth/', include('djoser.social.urls')),
 ]

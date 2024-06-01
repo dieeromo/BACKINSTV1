@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'biblioteca',
     'inventario',
     'pedi',
+    'peas'
 ]
 
 CORS_ALLOWED_ORIGINS = [
