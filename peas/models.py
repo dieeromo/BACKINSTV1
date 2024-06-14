@@ -69,7 +69,7 @@ class Semestre(models.Model):
     fecha_inicio = models.DateField()
     fecha_finalizacion = models.DateField()
     observacion = models.CharField(max_length=255, null=True, blank=True)
-    archivo_agenda = models.FileField(upload_to='semestres/', validators=[validate_pdf_size], null=True, blank=True)
+    archivo_agenda = models.FileField(upload_to='pea/semestres/', validators=[validate_pdf_size], null=True, blank=True)
     digitador = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
     def __str__(self):
         return "{} ".format(self.nombre)
@@ -84,11 +84,14 @@ class Curso(models.Model):
     semestre = models.ForeignKey(Semestre, on_delete=models.CASCADE)
     asignatura = models.ForeignKey(Asignaturas_carreras, on_delete=models.CASCADE)
     paralelo = models.ForeignKey(Paralelo_Asignatura, on_delete=models.CASCADE)
-    docente = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
+    docente = models.ForeignKey(UserAccount, on_delete=models.CASCADE, related_name='docente')
+   
     archivo_horario = models.FileField(upload_to='pea/curso/horario', validators=[validate_pdf_size], null=True, blank=True)
-    archivo_pea = models.FileField(upload_to='pea/curso/pea', validators=[validate_pdf_size], null=True, blank=True)
+    archivo_pea = models.FileField(upload_to='pea/curso/documentopea', validators=[validate_pdf_size], null=True, blank=True)
+    
     observacion = models.CharField(max_length=255, null=True, blank=True)
-    digitador = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
+    
+    digitador = models.ForeignKey(UserAccount, on_delete=models.CASCADE, related_name='digitadorCurso')
 
 
 
