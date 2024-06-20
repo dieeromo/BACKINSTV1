@@ -2,7 +2,7 @@ from django.urls import path, include, re_path
 from .views import router
 from .views import PediVersion_ViewSet, ObjetivoEstrategico_ViewSet, ObjetivoEspecifico_ViewSet, MetaEspecifico_ViewSet
 from .views import ActividaMeta_ViewSet, MedioVerificacion_ViewSet, IndicadorMedioPedi_ViewSet
-from .views import poa_ViewSet
+from .views import poa_ViewSet, PediData
 from rest_framework import routers
 from . import views
 
@@ -16,6 +16,7 @@ router.register(r'medio_verificacion', MedioVerificacion_ViewSet)
 router.register(r'indicador_medio_pedi', IndicadorMedioPedi_ViewSet)
 router.register(r'poa', poa_ViewSet)
 
+
 urlpatterns = [
     path('pedi/', include(router.urls)),
     path('objetivos_estrategicos/<int:pedi>/', views.obj_estrategico_filtro_pedi),
@@ -25,6 +26,11 @@ urlpatterns = [
     path('medio_verificacion/<int:actividad>/', views.medioVerificacion_actividad),
     path('indicador_pedi/<int:medio>/', views.indicadorPedi_medio),
     path('poa/<int:indicador>/', views.poaTabla_indicadorPedi),
+
+    #path('planificacion/', views.FullDataViewPEI),
+    path('pedidata/', PediData.as_view(), name='PediData'),
+
+    
     
 
 ]

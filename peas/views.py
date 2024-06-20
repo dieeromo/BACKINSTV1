@@ -14,6 +14,9 @@ from .serializers import modalidadCarrera_Serializer, carrerasInstituto_Serializ
 from .serializers import tipoAsignatura_Serializer, asignaturaCarreras_Serializer
 from .serializers import semestre_Serializer, paraleloAsignatura_Serializer, curso_Serializer
 
+
+
+
 class ModalidadCarrera_ViewSet(viewsets.ModelViewSet):
     queryset = ModalidadCarrera.objects.all().order_by('-id')
     serializer_class = modalidadCarrera_Serializer

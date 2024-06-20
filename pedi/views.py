@@ -1,5 +1,5 @@
 
-
+from rest_framework.views import APIView
 from rest_framework import serializers, routers, viewsets, generics
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -16,6 +16,42 @@ from .serializers import  metaObjeticoEspecifico_Serializer
 from .serializers import actividadMeta_Serializer, medio_verificacion_Serializer, indicador_medioPedi_Serializer
 from .serializers import poa_Serializer
 from accounts.models import UserAccount
+
+
+class PediData(APIView):
+    def get(self, request):
+        data = []
+        pedis = Pedi_version.objects.all()
+        for pedi in pedis:
+            oestrategicos = Objetivo_estrategico.objects.filter(pedi=pedi)
+            for oestrategico in oestrategicos:
+                oespecificos = Objetivo_especifico.objects.filter(objetivo_estrategico=oestrategico)
+                for oespecifico in oespecificos:
+                    metas = Meta_objetivo.objects.filter(objetivo_especifico=oespecifico)
+                    for meta in metas:
+                        actividades = Actividad_meta.objects.filter(meta_objetivo=meta)
+                        for actividad in actividades:
+                            medios_verificacio = Medio_verificacion.objects.filter(actividad_meta=actividad)
+                            for medio in medios_verificacio:
+                                indicadores_medios = IndicadorMedioVerificacion_Pedi.objects.filter(medio_verificacion = medio)
+                                for indicador in indicadores_medios:
+                                    data.append({
+                                        'pedi': pedi.nombre,
+                                        'oestrategico': oestrategico.nombre,
+                                        'oespecifico': oespecifico.nombre,
+                                        'meta': meta.nombre,
+                                        'actividad': actividad.nombre,
+                                        'medio':medio.nombre,
+                                        'indicadorPedi': indicador.nombre,
+                                        'totalPedi': indicador.total,
+                                        'anio1':indicador.anio1,
+                                        'anio2':indicador.anio2,
+                                        'anio3':indicador.anio3,
+                                        'anio4':indicador.anio4,
+                                        'anio5':indicador.anio5,
+                                        'responsable':indicador.entidadResponsable.nombre,
+                                    })
+        return Response(data)
 
 
 class PediVersion_ViewSet(viewsets.ModelViewSet):
