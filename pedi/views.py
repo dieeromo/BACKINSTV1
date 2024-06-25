@@ -38,6 +38,7 @@ class PediData(APIView):
                                     data.append({
                                         'pedi': pedi.nombre,
                                         'oestrategico': oestrategico.nombre,
+                                        'oestrategico_sigla':oestrategico.sigla,
                                         'oespecifico': oespecifico.nombre,
                                         'meta': meta.nombre,
                                         'actividad': actividad.nombre,
@@ -50,7 +51,67 @@ class PediData(APIView):
                                         'anio4':indicador.anio4,
                                         'anio5':indicador.anio5,
                                         'responsable':indicador.entidadResponsable.nombre,
+                                        'responsable_sigla':indicador.entidadResponsable.siglas,
                                     })
+        return Response(data)
+
+class PoaData(APIView):
+    def get(self, request):
+        data = []
+        pedis = Pedi_version.objects.all()
+        for pedi in pedis:
+            oestrategicos = Objetivo_estrategico.objects.filter(pedi=pedi)
+            for oestrategico in oestrategicos:
+                oespecificos = Objetivo_especifico.objects.filter(objetivo_estrategico=oestrategico)
+                for oespecifico in oespecificos:
+                    metas = Meta_objetivo.objects.filter(objetivo_especifico=oespecifico)
+                    for meta in metas:
+                        actividades = Actividad_meta.objects.filter(meta_objetivo=meta)
+                        for actividad in actividades:
+                            medios_verificacio = Medio_verificacion.objects.filter(actividad_meta=actividad)
+                            for medio in medios_verificacio:
+                                indicadores_medios = IndicadorMedioVerificacion_Pedi.objects.filter(medio_verificacion = medio)
+                                for indicador in indicadores_medios:
+                                        
+                                    
+                                        data.append({
+                                            'pedi': pedi.nombre,
+                                            'oestrategico': oestrategico.nombre,
+                                            'oestrategico_sigla':oestrategico.sigla,
+                                            'oespecifico': oespecifico.nombre,
+                                            'meta': meta.nombre,
+                                            'actividad': actividad.nombre,
+                                            'medio':medio.nombre,
+                                            'indicadorPedi': indicador.nombre,
+                                            'indicadorID':indicador.id,
+                                            'totalPedi': indicador.total,
+                                            #'anioPoa':poa.anio,
+                                 
+
+                                            'responsable':indicador.entidadResponsable.nombre,
+                                            'responsable_sigla':indicador.entidadResponsable.siglas,
+                                        })
+                                        
+        
+                                     
+        for datos in data:
+            poaData = Poa.objects.filter(indicadorPedi = datos['indicadorID'], anio=2024)
+            for p in poaData:
+                datos['anioPoa'] = p.anio
+                datos['totalAnio'] = p.totalAnio
+                datos['pro1'] = p.pro1
+                datos['pro2'] = p.pro2
+                datos['pro3'] = p.pro3
+                datos['pro4'] = p.pro4
+                datos['pro5'] = p.pro5
+                datos['pro6'] = p.pro6
+                datos['pro7'] = p.pro7
+                datos['pro8'] = p.pro8
+                datos['pro9'] = p.pro9
+                datos['pro10'] = p.pro10
+                datos['pro11'] = p.pro11
+                datos['pro12'] = p.pro12
+
         return Response(data)
 
 

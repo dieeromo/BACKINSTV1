@@ -2,7 +2,7 @@ from django.urls import path, include, re_path
 from .views import router
 from .views import PediVersion_ViewSet, ObjetivoEstrategico_ViewSet, ObjetivoEspecifico_ViewSet, MetaEspecifico_ViewSet
 from .views import ActividaMeta_ViewSet, MedioVerificacion_ViewSet, IndicadorMedioPedi_ViewSet
-from .views import poa_ViewSet, PediData
+from .views import poa_ViewSet, PediData, PoaData
 from rest_framework import routers
 from . import views
 
@@ -29,6 +29,7 @@ urlpatterns = [
 
     #path('planificacion/', views.FullDataViewPEI),
     path('pedidata/', PediData.as_view(), name='PediData'),
+    path('poadata/', PoaData.as_view(), name='PoaData'),
 
     
     
