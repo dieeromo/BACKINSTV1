@@ -85,11 +85,24 @@ class PoaData(APIView):
                                             'indicadorPedi': indicador.nombre,
                                             'indicadorID':indicador.id,
                                             'totalPedi': indicador.total,
-                                            #'anioPoa':poa.anio,
+                                            'anio1':indicador.anio1,
+                                            'anio2':indicador.anio2,
+                                            'anio3':indicador.anio3,
+                                            'anio4':indicador.anio4,
+                                            'anio5':indicador.anio5,
+                                            'medio_verificacion_id':medio.id,
+                                            'activo_indicador': indicador.activo,
+                                            'cumple_indicador':indicador.cumple,
+                                            'observacion_indicador':indicador.observacion,
+                                            'digitador':indicador.digitador.id,
+                                            
                                  
 
                                             'responsable':indicador.entidadResponsable.nombre,
+                                            'responsable_id':indicador.entidadResponsable.id,
                                             'responsable_sigla':indicador.entidadResponsable.siglas,
+                                            'coordinador_entidad':indicador.entidadResponsable.representante.id,
+                                            'numeroPoa':indicador.numeroPoa,
                                         })
                                         
         
@@ -97,6 +110,7 @@ class PoaData(APIView):
         for datos in data:
             poaData = Poa.objects.filter(indicadorPedi = datos['indicadorID'], anio=2024)
             for p in poaData:
+                datos['idPoa'] = p.id
                 datos['anioPoa'] = p.anio
                 datos['totalAnio'] = p.totalAnio
                 datos['pro1'] = p.pro1
@@ -111,6 +125,21 @@ class PoaData(APIView):
                 datos['pro10'] = p.pro10
                 datos['pro11'] = p.pro11
                 datos['pro12'] = p.pro12
+                datos['NumeroSeguimiento'] = p.NumeroSeguimiento
+                
+                datos['eje1'] = p.eje1
+                datos['eje2'] = p.eje2
+                datos['eje3'] = p.eje3
+                datos['eje4'] = p.eje4
+                datos['eje5'] = p.eje5
+                datos['eje6'] = p.eje6
+                datos['eje7'] = p.eje7
+                datos['eje8'] = p.eje8
+                datos['eje9'] = p.eje9
+                datos['eje10'] = p.eje10
+                datos['eje11'] = p.eje11
+                datos['eje12'] = p.eje12
+                
 
         return Response(data)
 
