@@ -103,7 +103,7 @@ class IndicadorMedioVerificacion_Pedi(models.Model):
     digitador = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
     numeroPoa = models.IntegerField(default= 1)
     def __str__(self):
-        return "{} ".format(self.nombre)
+        return "*NuPoa:{} *Ent:{} *Ind: {}".format(self.numeroPoa, self.entidadResponsable,self.nombre)
 
 
 class Poa(models.Model):
@@ -140,6 +140,8 @@ class Poa(models.Model):
     observacion = models.TextField( null=True, blank=True)
     digitador = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
     NumeroSeguimiento = models.IntegerField(default= 1)
+    def __str__(self):
+        return "{} *Anio:{} *Ind: {}".format(self.NumeroSeguimiento, self.anio,self.indicadorPedi)
 
 
 class JustificacionPoa(models.Model):
