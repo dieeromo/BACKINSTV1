@@ -127,6 +127,7 @@ class PoaData(APIView):
                 datos['pro12'] = p.pro12
                 datos['NumeroSeguimiento'] = p.NumeroSeguimiento
                 
+                datos['totalAnioEje'] = p.totalAnioEje
                 datos['eje1'] = p.eje1
                 datos['eje2'] = p.eje2
                 datos['eje3'] = p.eje3

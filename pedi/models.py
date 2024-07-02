@@ -122,7 +122,8 @@ class Poa(models.Model):
     pro10 = models.IntegerField()
     pro11 = models.IntegerField()
     pro12 = models.IntegerField()
-
+    
+    totalAnioEje = models.IntegerField(null=True, blank=True)
     eje1 = models.IntegerField(null=True, blank=True)
     eje2 = models.IntegerField(null=True, blank=True)
     eje3 = models.IntegerField(null=True, blank=True)
