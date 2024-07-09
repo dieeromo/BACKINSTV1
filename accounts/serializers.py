@@ -23,7 +23,7 @@ class usuario_serializador_creado(UserSerializer):
         return f"{obj.first_name} {obj.last_name}"
     class Meta:
         model = UserAccount
-        fields = ('id', 'email', 'first_name', 'last_name','is_rectora','is_investigacion','is_docente','is_administrativo3','label','value','is_adminBolsa','is_adminBiblioteca','is_adminInventario')
+        fields = ('id', 'email', 'first_name', 'last_name','is_rectora','is_investigacion','is_docente','is_administrativo3','label','value','is_adminBolsa','is_adminBiblioteca','is_adminInventario','is_coor_estrategico')
         #fields = '__all__'
 
 

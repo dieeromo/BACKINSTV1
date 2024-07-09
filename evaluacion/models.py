@@ -21,25 +21,34 @@ class CriterioEvaluacion(models.Model):
     nombre = models.CharField(max_length=255)
     numeral = models.CharField(max_length=20)
     def __str__(self):
-        return "{} ".format(self.nombre)
+        return "{} {} ".format(self.numeral,self.nombre)
     
 class SubCriterioEvaluacion(models.Model):
     criterioEvaluacion = models.ForeignKey(CriterioEvaluacion, on_delete=models.CASCADE)
     nombre = models.TextField()
     numeral = models.CharField(max_length=20)
     def __str__(self):
-        return "{} ".format(self.nombre)
+        return "{} {}".format(self.numeral, self.nombre)
     
 class TipoIndicador(models.Model):
     nombre = models.CharField(max_length=255)
+    def __str__(self):
+        return "{}".format(self.nombre)
     
 class IndicadorEvaluacion(models.Model):
     subCriterioEvaluacion = models.ForeignKey(SubCriterioEvaluacion, on_delete=models.CASCADE)
     nombre = models.TextField()
     numeral = models.CharField(max_length=20)
     calificacion1 = models.IntegerField(null=True, blank= True)
+    tipoIndicador = models.ForeignKey(TipoIndicador, on_delete=models.CASCADE, null=True, blank=True)
+    responsable = models.ForeignKey(UserAccount, on_delete=models.CASCADE, null=True, blank=True)
+    coresponsable1 = models.ForeignKey(UserAccount, on_delete=models.CASCADE, related_name='coresponsableIndicador1', null=True, blank=True)
+    coresponsable2 = models.ForeignKey(UserAccount, on_delete=models.CASCADE, related_name='coresponsableIndicador2', null=True, blank=True)
+    coresponsable3 = models.ForeignKey(UserAccount, on_delete=models.CASCADE, related_name='coresponsableIndicador3', null=True, blank=True)
+    coresponsable4 = models.ForeignKey(UserAccount, on_delete=models.CASCADE, related_name='coresponsableIndicador4', null=True, blank=True)
+    coresponsable5 = models.ForeignKey(UserAccount, on_delete=models.CASCADE, related_name='coresponsableIndicador5', null=True, blank=True)
     def __str__(self):
-        return "{} ".format(self.nombre)
+        return "{} {} ".format(self.numeral, self.nombre)
     
 class EvidenciaEvaluacion(models.Model):
     indicadorEvaluacion = models.ForeignKey(IndicadorEvaluacion, on_delete=models.CASCADE)
