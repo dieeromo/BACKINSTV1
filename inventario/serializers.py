@@ -33,6 +33,8 @@ class inventarioIST_Serializer(serializers.ModelSerializer):
     ubicacion_name = serializers.CharField(source='ubicacion.ubicacion', read_only=True)
     asignado_name = serializers.CharField(source='asignado.get_full_name', read_only=True)
     digitador_name = serializers.CharField(source='digitador.get_full_name', read_only=True)
+    estado_name = serializers.CharField(source='estado.estado', read_only=True)
+    tipo_name = serializers.CharField(source='tipo.tipo', read_only=True)
 
     class Meta:
         model = InventarioIST

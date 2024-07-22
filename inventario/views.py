@@ -58,14 +58,12 @@ def register_inventario(request):
     ubicacion = UbicacionInventario.objects.get(id=data['ubicacion'])
     asignado = UserAccount.objects.get(id = data['asignado'])  
     digitador = UserAccount.objects.get(id = data['digitador'])  
-    print(tipo)  
-    print(estado)  
-    print(ubicacion)
-    print(asignado)  
+
     
     try:
         documento = InventarioIST.objects.create(
-            cod_unico = data['cod_unico'],
+            #cod_unico = data['cod_unico'],
+            cod_unico = 555,
             cod_senescyt = data['cod_senescyt'],
             cod_instituto = data['cod_instituto'],
             tipo = tipo,
