@@ -26,7 +26,7 @@ class Evaluacion_evidencia(APIView):
                 for subcriterio_i in subcriterios:
                     indicadores = IndicadorEvaluacion.objects.filter(subCriterioEvaluacion=subcriterio_i)
                     for indicador_i in indicadores:
-                        evidencias = EvidenciaEvaluacion.objects.filter(indicadorEvaluacion=indicador_i)
+                        evidencias = EvidenciaEvaluacion.objects.filter(indicadorEvaluacion=indicador_i).order_by('numeral')
                         for evidencia_i in evidencias:
                             data.append({
                                 'modelo':modelo_i.nombre,
@@ -40,7 +40,7 @@ class Evaluacion_evidencia(APIView):
                             })
         data2 = []
         for datos in data:
-            documentos = DocumentoEvaluacion.objects.filter(evidenciaEvaluacion=datos['evidenciaID'])
+            documentos = DocumentoEvaluacion.objects.filter(evidenciaEvaluacion=datos['evidenciaID']).order_by('numeral')
             if not documentos:
                 
                 data2.append({
@@ -91,7 +91,7 @@ class Evaluacion_evidencia_fil_ModeloCriterio(APIView):
                 for subcriterio_i in subcriterios:
                     indicadores = IndicadorEvaluacion.objects.filter(subCriterioEvaluacion=subcriterio_i)
                     for indicador_i in indicadores:
-                        evidencias = EvidenciaEvaluacion.objects.filter(indicadorEvaluacion=indicador_i)
+                        evidencias = EvidenciaEvaluacion.objects.filter(indicadorEvaluacion=indicador_i).order_by('numeral')
                         for evidencia_i in evidencias:
                             responsable = indicador_i.responsable
                             responsable_id = responsable.id if responsable else None
@@ -147,7 +147,7 @@ class Evaluacion_evidencia_fil_ModeloCriterio(APIView):
                             })
         data2 = []
         for datos in data:
-            documentos = DocumentoEvaluacion.objects.filter(evidenciaEvaluacion=datos['evidenciaID'])
+            documentos = DocumentoEvaluacion.objects.filter(evidenciaEvaluacion=datos['evidenciaID']).order_by('numeral')
             if not documentos:
                 
                 data2.append({
@@ -224,7 +224,7 @@ class Evaluacion_evidencia_fil_responsable(APIView):
     def get(self, request):
         data = []
         responsable_id = request.query_params.get('responsable_id', None)
-        documentos = DocumentoEvaluacion.objects.filter(responsable=responsable_id)
+        documentos = DocumentoEvaluacion.objects.filter(responsable=responsable_id).order_by('numeral')
         for documentos_i in documentos:
             evidencias = EvidenciaEvaluacion.objects.filter(id=documentos_i.evidenciaEvaluacion.id)
             for evidencias_i in evidencias:
@@ -246,10 +246,14 @@ class Evaluacion_evidencia_fil_responsable(APIView):
                                 'responsableID': documentos_i.responsable.id, 
                                 'periodoAcademico': periodoAcademico, 
                                 'periodoAcademicoID': periodoAcademico_id, 
+                                'evidencia_numeral': evidencias_i.numeral,
                                 'evidencia':evidencias_i.nombre,
-                                'indicador':indicadores_i.nombre,    
+                                'indicador_numeral':indicadores_i.numeral,
+                                'indicador':indicadores_i.nombre,  
+                                'responsableIndicador':f"{indicadores_i.responsable.first_name} {indicadores_i.responsable.last_name}",  
                                 'subcriterio':subcriterios_i.nombre,   
-                                'criterio':criterios_i.nombre        
+                                'criterio':criterios_i.nombre,
+                                   
                                 })
                         
         
