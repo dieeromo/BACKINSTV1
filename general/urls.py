@@ -2,9 +2,10 @@ from django.urls import path, include
 from . import views
 from .views import router
 from rest_framework import routers
-from . views import DependenciasInstitucionales_ViewSet
+from . views import DependenciasInstitucionales_ViewSet, BolsaEmpleo_ViewSet
 
 router = routers.DefaultRouter()
+router.register(r'bolsaEmpleo', BolsaEmpleo_ViewSet)
 router.register(r'dependencias', DependenciasInstitucionales_ViewSet)
 
 urlpatterns = [

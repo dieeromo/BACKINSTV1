@@ -6,6 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 
 
 from .models import ModeloEvaluacion,CriterioEvaluacion, SubCriterioEvaluacion
@@ -76,7 +77,7 @@ class Evaluacion_evidencia_fil_ModeloCriterio(APIView):
     def get(self, request):
         data = []
         criterio_id = request.query_params.get('criterio_id', None)
-        print('criterio',criterio_id)
+        #print('criterio',criterio_id)
 
         #if modelo_id is not None:
         #    modelos = ModeloEvaluacion.objects.filter(id=modelo_id)
@@ -293,3 +294,46 @@ class PeriodoAcademico_ViewSet(viewsets.ModelViewSet):
     queryset = PeriodoAcademico.objects.all().order_by('-id')
     serializer_class = periodoAcademico_Serializer
     router = routers.DefaultRouter()
+    
+    
+class Estadisticas(APIView):
+    def get(self, request):
+        toatal_documentos = DocumentoEvaluacion.objects.count()
+        documentos_con_pdf = DocumentoEvaluacion.objects.filter(archivo__isnull=True).count()
+        
+        indicadores = IndicadorEvaluacion.objects.all()
+        data = []
+        
+        for indicador_i in indicadores:
+            evidencias = indicador_i.evidencias.all()
+            total_documentos_indicador = DocumentoEvaluacion.objects.filter(evidenciaEvaluacion__in=evidencias).count()
+            total_documentos_pdf = DocumentoEvaluacion.objects.filter(evidenciaEvaluacion__in=evidencias).exclude(
+                Q(archivo__isnull=True) | Q(archivo__exact='')
+                ).count()
+            
+            total_documentos_link = DocumentoEvaluacion.objects.filter(
+                evidenciaEvaluacion__in=evidencias
+                ).exclude(
+                     Q(link__isnull=True) | Q(link__exact='')
+                ).count()
+            
+            if total_documentos_indicador != 0:
+                cumplimiento = ((total_documentos_pdf+total_documentos_link)/total_documentos_indicador)*100
+            else:
+                cumplimiento = 0
+            data.append({
+                'indicador':indicador_i.nombre,
+                'indicadorResponsable':f"{indicador_i.responsable}",
+                'total_documentos_indicador':total_documentos_indicador,
+                'total_documentos_pdf': total_documentos_pdf,
+                'total_documentos_link': total_documentos_link,
+                'cumplimiento':cumplimiento,
+            })
+            
+    
+        
+        contexto = {
+            'total_documentos': toatal_documentos,
+            'documentos_con_pdf':documentos_con_pdf
+        }
+        return Response(data)

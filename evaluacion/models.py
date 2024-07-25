@@ -51,7 +51,7 @@ class IndicadorEvaluacion(models.Model):
         return "{} {} ".format(self.numeral, self.nombre)
     
 class EvidenciaEvaluacion(models.Model):
-    indicadorEvaluacion = models.ForeignKey(IndicadorEvaluacion, on_delete=models.CASCADE)
+    indicadorEvaluacion = models.ForeignKey(IndicadorEvaluacion, on_delete=models.CASCADE, related_name='evidencias')
     nombre = models.TextField()
     numeral = models.CharField(max_length=20)
     calificacion1 = models.IntegerField(null=True, blank= True)
@@ -66,7 +66,7 @@ class PeriodoAcademico(models.Model):
     
     
 class DocumentoEvaluacion(models.Model):
-    evidenciaEvaluacion = models.ForeignKey(EvidenciaEvaluacion, on_delete=models.CASCADE)
+    evidenciaEvaluacion = models.ForeignKey(EvidenciaEvaluacion, on_delete=models.CASCADE, related_name='documentos')
     nombre = models.TextField()
     numeral = models.IntegerField()
     periodoAcademico = models.ForeignKey(PeriodoAcademico, on_delete=models.CASCADE, null=True, blank=True)
