@@ -27,7 +27,7 @@ class UbicacionInventario(models.Model):
         return "{} ".format(self.ubicacion)
 
 class InventarioIST(models.Model): 
-    cod_unico = models.CharField(max_length=200, unique=True,  blank=True) #codigo unico del sistema, este se lo pone al momento de registrar el equipo al sistema
+    cod_unico = models.CharField(max_length=200,   blank=True) #codigo unico del sistema, este se lo pone al momento de registrar el equipo al sistema
     cod_senescyt = models.CharField(max_length=200, null=True, blank=True) #codigo asignado por senesvcyt, o si el usuario no ingresa nada, el sistema le pone automaticamente NA
     cod_instituto = models.CharField(max_length=200,null=True, blank=True) #codigo asignado por el institutp, o si el usuario no ingresa nada, el sistema le pone automaticamente NA
     tipo = models.ForeignKey(TipoInventario,on_delete=models.CASCADE)
