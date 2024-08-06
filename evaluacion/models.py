@@ -86,14 +86,15 @@ class DocumentoEvaluacion(models.Model):
     link = models.TextField(null=True, blank=True)
     
     estado = models.IntegerField(choices=[(1, 'Por revisar'), (2, 'Aprobado'),(3, 'Corregir'),(0, 'Sin subir') ], default=0)
+    estado2 = models.IntegerField(choices=[(1, 'Por revisar'), (2, 'Aprobado'),(3, 'Corregir'),(0, 'Sin subir') ], default=0)
     observacion = models.TextField(null=True, blank=True)
     
     def __str__(self):
-        return "{} ".format(self.nombre)
+        return f'{self.nombre} - L:{self.link} - A:{self.archivo} -{self.estado2}'
     
     def save(self, *args, **kwargs):
         if not self.archivo and not self.link:
-            self.estado = 0
+            self.estado2 = 0
         super(DocumentoEvaluacion, self).save(*args, **kwargs)
     
     

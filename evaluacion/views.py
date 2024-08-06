@@ -216,7 +216,7 @@ class Evaluacion_evidencia_fil_ModeloCriterio(APIView):
                     'responsableID': documentos_i.responsable.id, 
                     'periodoAcademico': periodoAcademico, 
                     'periodoAcademicoID': periodoAcademico_id,
-                    'estado_documento':documentos_i.estado,
+                    'estado_documento':documentos_i.estado2,
                     'observacion_documento':documentos_i.observacion  
                                  
                 })
@@ -259,7 +259,7 @@ class Evaluacion_evidencia_fil_responsable(APIView):
                                 'responsableIndicador':f"{indicadores_i.responsable.first_name} {indicadores_i.responsable.last_name}",  
                                 'subcriterio':subcriterios_i.nombre,   
                                 'criterio':criterios_i.nombre,
-                                'estado_documento':documentos_i.estado,
+                                'estado_documento':documentos_i.estado2,
                                 'observacion_documento':documentos_i.observacion, 
                                    
                                 })
