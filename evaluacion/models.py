@@ -75,12 +75,18 @@ class DocumentoEvaluacion(models.Model):
     responsable = models.ForeignKey(UserAccount, on_delete=models.CASCADE, null=True, blank=True,  related_name='responsableDocEvaluacion')
     
     calificacion1 = models.IntegerField(null=True, blank= True)
+    
+   
     revisado = models.BooleanField(default = False)
     edicion = models.BooleanField(default = True)
     
     
+    
     archivo = models.FileField(upload_to='evaluacionCaces/', validators=[validate_pdf_size], null=True, blank=True)
     link = models.TextField(null=True, blank=True)
+    
+    estado = models.IntegerField(choices=[(1, 'Por revisar'), (2, 'Aprobado'),(3, 'Corregir') ], default=0)
+    observacion = models.TextField(null=True, blank=True)
     
     def __str__(self):
         return "{} ".format(self.nombre)

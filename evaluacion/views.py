@@ -174,7 +174,10 @@ class Evaluacion_evidencia_fil_ModeloCriterio(APIView):
                     'evidencia':datos['evidencia'],
                     'evidenciaID':datos['evidenciaID'],
                     'periodoAcademico': "",  
-                    'periodoAcademicoID': "",   
+                    'periodoAcademicoID': "", 
+                    'estado_documento':"0",
+                    'observacion_documento':""
+                      
                                    
                 })
             for documentos_i in documentos:
@@ -212,7 +215,9 @@ class Evaluacion_evidencia_fil_ModeloCriterio(APIView):
                     'responsable': documentos_i.responsable.first_name +' '+ documentos_i.responsable.last_name,    
                     'responsableID': documentos_i.responsable.id, 
                     'periodoAcademico': periodoAcademico, 
-                    'periodoAcademicoID': periodoAcademico_id,  
+                    'periodoAcademicoID': periodoAcademico_id,
+                    'estado_documento':documentos_i.estado,
+                    'observacion_documento':documentos_i.observacion  
                                  
                 })
            
@@ -254,6 +259,8 @@ class Evaluacion_evidencia_fil_responsable(APIView):
                                 'responsableIndicador':f"{indicadores_i.responsable.first_name} {indicadores_i.responsable.last_name}",  
                                 'subcriterio':subcriterios_i.nombre,   
                                 'criterio':criterios_i.nombre,
+                                'estado_documento':documentos_i.estado,
+                                'observacion_documento':documentos_i.observacion, 
                                    
                                 })
                         
