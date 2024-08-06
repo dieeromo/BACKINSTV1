@@ -91,5 +91,10 @@ class DocumentoEvaluacion(models.Model):
     def __str__(self):
         return "{} ".format(self.nombre)
     
+    def save(self, *args, **kwargs):
+        if not self.archivo and not self.link:
+            self.estado = 0
+        super(DocumentoEvaluacion, self).save(*args, **kwargs)
+    
     
 
