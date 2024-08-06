@@ -85,7 +85,7 @@ class DocumentoEvaluacion(models.Model):
     archivo = models.FileField(upload_to='evaluacionCaces/', validators=[validate_pdf_size], null=True, blank=True)
     link = models.TextField(null=True, blank=True)
     
-    estado = models.IntegerField(choices=[(1, 'Por revisar'), (2, 'Aprobado'),(3, 'Corregir') ], default=0)
+    estado = models.IntegerField(choices=[(1, 'Por revisar'), (2, 'Aprobado'),(3, 'Corregir'),(0, 'Sin subir') ], default=0)
     observacion = models.TextField(null=True, blank=True)
     
     def __str__(self):
