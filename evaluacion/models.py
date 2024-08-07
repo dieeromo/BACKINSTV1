@@ -96,6 +96,11 @@ class DocumentoEvaluacion(models.Model):
         if not self.archivo and not self.link:
             self.estado2 = 0
         super(DocumentoEvaluacion, self).save(*args, **kwargs)
+        
+    def save(self, *args, **kwargs):
+        if  self.archivo or self.link:
+            self.estado2 = 1
+        super(DocumentoEvaluacion, self).save(*args, **kwargs)
     
     
 
