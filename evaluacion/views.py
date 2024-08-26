@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-
+from django.db.models import Count
 
 from .models import ModeloEvaluacion,CriterioEvaluacion, SubCriterioEvaluacion
 from .models import TipoIndicador,IndicadorEvaluacion,EvidenciaEvaluacion
@@ -303,44 +303,77 @@ class PeriodoAcademico_ViewSet(viewsets.ModelViewSet):
     router = routers.DefaultRouter()
     
     
-class Estadisticas(APIView):
-    def get(self, request):
-        toatal_documentos = DocumentoEvaluacion.objects.count()
-        documentos_con_pdf = DocumentoEvaluacion.objects.filter(archivo__isnull=True).count()
-        
-        indicadores = IndicadorEvaluacion.objects.all()
-        data = []
-        
-        for indicador_i in indicadores:
-            evidencias = indicador_i.evidencias.all()
-            total_documentos_indicador = DocumentoEvaluacion.objects.filter(evidenciaEvaluacion__in=evidencias).count()
-            total_documentos_pdf = DocumentoEvaluacion.objects.filter(evidenciaEvaluacion__in=evidencias).exclude(
-                Q(archivo__isnull=True) | Q(archivo__exact='')
-                ).count()
-            
-            total_documentos_link = DocumentoEvaluacion.objects.filter(
-                evidenciaEvaluacion__in=evidencias
-                ).exclude(
-                     Q(link__isnull=True) | Q(link__exact='')
-                ).count()
-            
-            if total_documentos_indicador != 0:
-                cumplimiento = ((total_documentos_pdf+total_documentos_link)/total_documentos_indicador)*100
-            else:
-                cumplimiento = 0
-            data.append({
-                'indicador':indicador_i.nombre,
-                'indicadorResponsable':f"{indicador_i.responsable}",
-                'total_documentos_indicador':total_documentos_indicador,
-                'total_documentos_pdf': total_documentos_pdf,
-                'total_documentos_link': total_documentos_link,
-                'cumplimiento':cumplimiento,
-            })
-            
+
+
+@api_view(['GET'])
+def EstadisticasTotaldocumentos(request):
+    estado_descriptions = {
+        0: 'Sin_subir',
+        1: 'Por_revisar',
+        2: 'Aprobado',
+        3: 'Por_corregir',
+     
+    }
     
-        
-        contexto = {
-            'total_documentos': toatal_documentos,
-            'documentos_con_pdf':documentos_con_pdf
-        }
-        return Response(data)
+    documentos_por_estado = DocumentoEvaluacion.objects.values('estado2').annotate(total=Count('estado2'))
+    
+    # Convierte los resultados a un diccionario para la respuesta JSON
+    #estado_counts = {item['estado2']: item['total'] for item in documentos_por_estado}
+    estado_counts = {
+        estado_descriptions[item['estado2']]: item['total']
+        for item in documentos_por_estado
+    }
+    
+    return Response(estado_counts)
+ 
+ 
+ 
+@api_view(['GET'])
+def EstadisticaDocumentos_indicador(request):
+    
+    # Diccionario que mapea los números de estado2 a sus nombres descriptivos
+    estado_descriptions = {
+        0: 'Por Revisar',
+        1: 'Aprobado',
+        2: 'Por Corregir',
+        3: 'Sin Subir'
+    }
+
+    # Realiza la consulta agrupando por 'indicadorEvaluacion' y 'estado2'
+    documentos_por_indicador = DocumentoEvaluacion.objects.values('evidenciaEvaluacion__indicadorEvaluacion', 'estado2').annotate(total=Count('id'))
+
+    # Mapea los resultados a un formato más amigable para el frontend
+    resultado = {}
+    for item in documentos_por_indicador:
+        #indicador = item['evidenciaEvaluacion__indicadorEvaluacion']
+        indicador = str( IndicadorEvaluacion.objects.get(id= int(item['evidenciaEvaluacion__indicadorEvaluacion'])) )
+        print( str( IndicadorEvaluacion.objects.get(id= int(item['evidenciaEvaluacion__indicadorEvaluacion'])) ) )
+        #indicador = IndicadorEvaluacion.objects.get(id= int(item['evidenciaEvaluacion__indicadorEvaluacion']))
+        estado = estado_descriptions[item['estado2']]
+        total = item['total']
+
+        if indicador not in resultado:
+            resultado[indicador] = {
+                'Por Revisar': 0,
+                'Aprobado': 0,
+                'Por Corregir': 0,
+                'Sin Subir': 0
+            }
+
+        resultado[indicador][estado] = total
+    # for item in documentos_por_indicador:
+    #     indicador = item['indicadorEvaluacion']
+    #     estado = estado_descriptions[item['estado2']]
+    #     total = item['total']
+
+    #     if indicador not in resultado:
+    #         resultado[indicador] = {
+    #             'Por Revisar': 0,
+    #             'Aprobado': 0,
+    #             'Por Corregir': 0,
+    #             'Sin Subir': 0
+    #         }
+
+    #     resultado[indicador][estado] = total
+
+    return Response(resultado)

@@ -12,4 +12,7 @@ admin.site.register(TipoIndicador)
 admin.site.register(IndicadorEvaluacion)
 admin.site.register(EvidenciaEvaluacion)
 admin.site.register(PeriodoAcademico)
-admin.site.register(DocumentoEvaluacion)
+
+class DocumentoEvaluacionAdmin(admin.ModelAdmin):
+    list_display = ('evidenciaEvaluacion','nombre', 'responsable', 'estado2')
+admin.site.register(DocumentoEvaluacion,DocumentoEvaluacionAdmin)
