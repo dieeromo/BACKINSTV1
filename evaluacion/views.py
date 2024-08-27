@@ -333,10 +333,12 @@ def EstadisticaDocumentos_indicador(request):
     
     # Diccionario que mapea los números de estado2 a sus nombres descriptivos
     estado_descriptions = {
-        0: 'PorRevisar',
-        1: 'Aprobado',
-        2: 'Corregir',
-        3: 'SinSubir'
+        
+        0: 'SinSubir',   
+        1: 'PorRevisar',
+        2: 'Aprobado',
+        3: 'Corregir',
+
     }
 
     # Realiza la consulta agrupando por 'indicadorEvaluacion' y 'estado2'
