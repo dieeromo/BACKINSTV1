@@ -86,7 +86,7 @@ class DocumentoEvaluacion(models.Model):
     link = models.TextField(null=True, blank=True)
     
     estado = models.IntegerField(choices=[(1, 'Por revisar'), (2, 'Aprobado'),(3, 'Corregir'),(0, 'Sin subir') ], default=0)
-    estado2 = models.IntegerField(choices=[(1, 'Por revisar'), (2, 'Aprobado'),(3, 'Corregir'),(0, 'Sin subir') ], default=0)
+    estado2 = models.IntegerField(choices=[(1, 'PorRevisar'), (2, 'Aprobado'),(3, 'Corregir'),(0, 'SinSubir') ], default=0)
     observacion = models.TextField(null=True, blank=True)
     
     def __str__(self):

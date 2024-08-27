@@ -333,10 +333,10 @@ def EstadisticaDocumentos_indicador(request):
     
     # Diccionario que mapea los números de estado2 a sus nombres descriptivos
     estado_descriptions = {
-        0: 'Por Revisar',
+        0: 'PorRevisar',
         1: 'Aprobado',
-        2: 'Por Corregir',
-        3: 'Sin Subir'
+        2: 'Corregir',
+        3: 'SinSubir'
     }
 
     # Realiza la consulta agrupando por 'indicadorEvaluacion' y 'estado2'
@@ -344,36 +344,26 @@ def EstadisticaDocumentos_indicador(request):
 
     # Mapea los resultados a un formato más amigable para el frontend
     resultado = {}
+
     for item in documentos_por_indicador:
         #indicador = item['evidenciaEvaluacion__indicadorEvaluacion']
         indicador = str( IndicadorEvaluacion.objects.get(id= int(item['evidenciaEvaluacion__indicadorEvaluacion'])) )
-        print( str( IndicadorEvaluacion.objects.get(id= int(item['evidenciaEvaluacion__indicadorEvaluacion'])) ) )
+        #print( str( IndicadorEvaluacion.objects.get(id= int(item['evidenciaEvaluacion__indicadorEvaluacion'])) ) )
         #indicador = IndicadorEvaluacion.objects.get(id= int(item['evidenciaEvaluacion__indicadorEvaluacion']))
         estado = estado_descriptions[item['estado2']]
+   
         total = item['total']
 
         if indicador not in resultado:
             resultado[indicador] = {
-                'Por Revisar': 0,
+                'PorRevisar': 0,
                 'Aprobado': 0,
-                'Por Corregir': 0,
-                'Sin Subir': 0
+                'Corregir': 0,
+                'SinSubir': 0
             }
+        
+    
 
         resultado[indicador][estado] = total
-    # for item in documentos_por_indicador:
-    #     indicador = item['indicadorEvaluacion']
-    #     estado = estado_descriptions[item['estado2']]
-    #     total = item['total']
-
-    #     if indicador not in resultado:
-    #         resultado[indicador] = {
-    #             'Por Revisar': 0,
-    #             'Aprobado': 0,
-    #             'Por Corregir': 0,
-    #             'Sin Subir': 0
-    #         }
-
-    #     resultado[indicador][estado] = total
 
     return Response(resultado)
