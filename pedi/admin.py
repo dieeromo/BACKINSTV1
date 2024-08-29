@@ -11,4 +11,7 @@ admin.site.register(Meta_objetivo)
 admin.site.register(Actividad_meta)
 admin.site.register(Medio_verificacion)
 admin.site.register(IndicadorMedioVerificacion_Pedi)
-admin.site.register(Poa)
+
+class PoaAdmin(admin.ModelAdmin):
+    list_display = ('id','indicadorPedi','totalAnio','pro1','pro2')
+admin.site.register(Poa, PoaAdmin)
