@@ -57,6 +57,7 @@ class PediData(APIView):
 
 class PoaData(APIView):
     def get(self, request):
+        entidadResponsableSigla = request.GET.get('entidadSigla', None)
         data = []
         pedis = Pedi_version.objects.all()
         for pedi in pedis:
@@ -70,10 +71,8 @@ class PoaData(APIView):
                         for actividad in actividades:
                             medios_verificacio = Medio_verificacion.objects.filter(actividad_meta=actividad)
                             for medio in medios_verificacio:
-                                indicadores_medios = IndicadorMedioVerificacion_Pedi.objects.filter(medio_verificacion = medio)
+                                indicadores_medios = IndicadorMedioVerificacion_Pedi.objects.filter(medio_verificacion = medio, entidadResponsable__siglas__icontains = entidadResponsableSigla )
                                 for indicador in indicadores_medios:
-                                        
-                                    
                                         data.append({
                                             'pedi': pedi.nombre,
                                             'oestrategico': oestrategico.nombre,
