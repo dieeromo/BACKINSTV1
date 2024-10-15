@@ -44,7 +44,6 @@ class obras_Serializer(serializers.ModelSerializer):
     tipo_obra = serializers.CharField(source='tipo_obra.tipo', read_only=True)
     tipo_material = serializers.CharField(source='tipo_material.material', read_only=True)
     estado_obra = serializers.CharField(source='estado_obra.estado', read_only=True)
-
     digitador = serializers.CharField(source='digitador.get_full_name', read_only=True)
     class Meta:
         model = Obras
@@ -55,6 +54,7 @@ class obras_Serializer(serializers.ModelSerializer):
 class autores_Serializer(serializers.ModelSerializer):
     value = serializers.CharField(source='id', read_only=True)
     label = serializers.CharField(source='nombres', read_only=True)
+    digitadorName = serializers.CharField(source='digitador.get_full_name', read_only=True)
     class Meta:
         model = Autores
         fields = "__all__"

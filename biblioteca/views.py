@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from rest_framework import serializers, routers, viewsets
+from rest_framework import generics, filters
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -12,6 +14,11 @@ from .serializers import  categoriaObra_Serializer, tipoObra_Serializer, tipoMat
 from .serializers import estadoObra_Serializer, obras_Serializer, autores_Serializer, obrasAutores_Serializer, ubicacionObras_Serializer
 from accounts.models import UserAccount
 # Create your views here.s
+
+class Obras_crud(viewsets.ModelViewSet):
+    queryset = Obras.objects.all().order_by('-id')
+    serializer_class = obras_Serializer
+    router = routers.DefaultRouter()
 
 
 @api_view(['GET'])
@@ -126,12 +133,14 @@ def registroAutor(request):
 
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
     
-@api_view(['GET'])
-@login_required()
-def listAutores(request):
-    autores = Autores.objects.filter().order_by('-id') 
-    serializer = autores_Serializer(autores, many=True)
-    return Response(serializer.data)
+    
+    
+# @api_view(['GET'])
+# @login_required()
+# def listAutores(request):
+#     autores = Autores.objects.filter().order_by('-id') 
+#     serializer = autores_Serializer(autores, many=True)
+#     return Response(serializer.data)
 
 
 
@@ -201,25 +210,86 @@ def uploadObraDocumento(request):
 
 
 @api_view(['GET'])
-@login_required()
+#@login_required()
 def FilterAutores_obras(request):
     data = request.data
+    autor=''
+    titulo=''
+    if data['autor'] != '':
+        autor = data['autor']
+    if data['titulo']!= '':
+        titulo = data['titulo']
     #try:
-    listaObrasAutores = ObrasAutores.objects.filter(nombres=data['autor']).order_by('-id') 
+    listaObrasAutores = ObrasAutores.objects.filter(autor_id__nombres__icontains=autor,obra_id__titulo__icontains=titulo).order_by('-id') 
     serializer = obrasAutores_Serializer( listaObrasAutores , many=True)
     return Response(serializer.data)
     #except:
     #    message = {'detalle': 'Algo esta mal en la peticion'}
     #    return Response(message, status=status.HTTP_400_BAD_REQUEST)
+    
+
+    
+class BibliotecaPagination(PageNumberPagination):
+    page_size = 100
+    page_size_query_param = 'page_size'
+    max_page_size = 2000
+
+# Vista con filtros personalizados
+class FilterObrasAutores_View(generics.ListAPIView):
+    serializer_class = obrasAutores_Serializer
+    pagination_class = BibliotecaPagination
+
+    def get_queryset(self):
+        # Tomamos los parámetros de la solicitud
+        autor = self.request.query_params.get('autor', '')
+        titulo = self.request.query_params.get('titulo', '')
+
+        # Construimos el queryset aplicando los filtros según los parámetros
+        queryset = ObrasAutores.objects.all()
+
+        # Aplicamos los filtros solo si los parámetros tienen valor
+        if autor:
+            queryset = queryset.filter(autor_id__nombres__icontains=autor)
+        if titulo:
+            queryset = queryset.filter(obra_id__titulo__icontains=titulo)
+
+        # Ordenamos por el campo 'id' en orden descendente
+        return queryset.order_by('-id')
+    
 
 
+class listAutores(generics.ListAPIView):
+    serializer_class = autores_Serializer
+    pagination_class = BibliotecaPagination
+
+    def get_queryset(self):
+        # Tomamos los parámetros de la solicitud
+        autor = self.request.query_params.get('autor', '')
+
+        # Construimos el queryset aplicando los filtros según los parámetros
+        queryset = Autores.objects.all()
+
+        # Aplicamos los filtros solo si los parámetros tienen valor
+        if autor:
+            queryset = queryset.filter(nombres__icontains=autor)
+
+
+        # Ordenamos por el campo 'id' en orden descendente
+        return queryset.order_by('-id')
+    
+
+
+
+    
 @api_view(['GET'])
 #@login_required()
 def FilterTitulo_obras(request, titulo):
-    print('titulo',titulo)
-  
+    tempo_titulo = ''
     #try:
-    listaObrasTitulo = Obras.objects.filter(titulo__icontains=titulo).order_by('-id') 
+    if titulo!='':
+        tempo_titulo= titulo
+        
+    listaObrasTitulo = Obras.objects.filter(titulo__icontains=tempo_titulo).order_by('-id') 
     serializer = obras_Serializer( listaObrasTitulo , many=True)
     return Response(serializer.data)
     #except:
@@ -245,6 +315,7 @@ def FilterAutores_obras_idObra(request,id):
 @api_view(['DELETE'])
 def deleteObraEntrada(request):
     data = request.data 
+    print('id delete',data['id'])
     try: 
         documento = Obras.objects.get(id=data['id'])
         documento.delete()
