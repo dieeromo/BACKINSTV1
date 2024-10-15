@@ -272,8 +272,6 @@ class listAutores(generics.ListAPIView):
         # Aplicamos los filtros solo si los parámetros tienen valor
         if autor:
             queryset = queryset.filter(nombres__icontains=autor)
-
-
         # Ordenamos por el campo 'id' en orden descendente
         return queryset.order_by('-id')
     

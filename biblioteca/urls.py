@@ -3,7 +3,7 @@ from . import views
 from rest_framework.routers import DefaultRouter
 from .views import UbicacionObras_ViewSet, CategoriasObras_ViewSet, TipoObras_ViewSet, AutoresObras_ViewSet
 from .views import router , FilterObrasAutores_View,Obras_crud, listAutores
-from .viewsFilter import ObrasAutores_Filter_View
+#from .viewsFilter import ObrasAutores_Filter_View
 
 router = DefaultRouter()
 router.register(r'ubicacion', UbicacionObras_ViewSet)
@@ -37,7 +37,7 @@ urlpatterns = [
     path('filtro/autor_por_obra/id/<int:id>/', views.FilterAutores_obras_idObra),  #d
     path('delete/obra_entrada/', views.deleteObraEntrada),  #d
 
-    path('filtro_todos_obras_autores', ObrasAutores_Filter_View.as_view(),),
+    #path('filtro_todos_obras_autores', ObrasAutores_Filter_View.as_view(),),
     
     
     #se utiliza para enviar lops datos
