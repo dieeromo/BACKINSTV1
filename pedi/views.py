@@ -58,6 +58,7 @@ class PediData(APIView):
 class PoaData(APIView):
     def get(self, request):
         entidadResponsableSigla = request.GET.get('entidadSigla', None)
+        anio = request.GET.get('anio', None)
         data = []
         pedis = Pedi_version.objects.all()
         for pedi in pedis:

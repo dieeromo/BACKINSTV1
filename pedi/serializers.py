@@ -54,6 +54,7 @@ class indicador_medioPedi_Serializer(serializers.ModelSerializer):
         fields = "__all__"
 
 class poa_Serializer(serializers.ModelSerializer):
+    indicadorNombre= serializers.CharField(source='indicadorPedi.nombre', read_only=True)
 
     class Meta:
         model = Poa
