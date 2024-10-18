@@ -14,5 +14,5 @@ admin.site.register(EvidenciaEvaluacion)
 admin.site.register(PeriodoAcademico)
 
 class DocumentoEvaluacionAdmin(admin.ModelAdmin):
-    list_display = ('evidenciaEvaluacion','nombre', 'responsable', 'estado2')
+    list_display = ('nombre','evidenciaEvaluacion', 'responsable', 'estado2')
 admin.site.register(DocumentoEvaluacion,DocumentoEvaluacionAdmin)
