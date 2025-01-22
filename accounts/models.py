@@ -42,6 +42,7 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     is_adminBolsa = models.BooleanField(default=False) # Sirva para habilitar el registro de documentos de acreditacion
     is_adminBiblioteca = models.BooleanField(default=False)
     is_adminInventario = models.BooleanField(default=False)
+    is_secretaria = models.BooleanField(default=False)
     
     
 

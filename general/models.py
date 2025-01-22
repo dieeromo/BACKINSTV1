@@ -72,6 +72,8 @@ class DependenciasInstitucionales(models.Model):
     activo = models.BooleanField(default = True)
     representante = models.ForeignKey(UserAccount, on_delete=models.CASCADE,related_name='representante')
     digitador = models.ForeignKey(UserAccount, on_delete=models.CASCADE, related_name='digitador')
+    fecha = models.DateField(null=True, blank=True)
+    archivoDesignacion = models.FileField(upload_to='organigrama/', validators=[validate_pdf_size], null=True, blank=True)
     def __str__(self):
         return "{} * {} * {}".format(self.nombre, self.siglas,self.representante )
 
@@ -81,7 +83,7 @@ class OcurrenciaDependencias(models.Model):
     def __str__(self):
         return "{} ** {}".format(self.nombre, self.activo)
     
-class HistorialDependencias(models.Model):
+class HistorialDependencias(models.Model):   ## EN DESUSO
      ocurrencia = models.ForeignKey(OcurrenciaDependencias, on_delete=models.CASCADE)
      descripcion = models.TextField()
      fecha = models.DateField()
@@ -95,6 +97,18 @@ class HistorialDependencias(models.Model):
      
     
 
+class HistorialDependenciasInstitucionales(models.Model):
+    dependencia = models.ForeignKey(DependenciasInstitucionales, on_delete=models.CASCADE)
+    nombre = models.TextField()
+    siglas = models.CharField(max_length=50)
+    tipo = models.ForeignKey(TipoDependencia, on_delete=models.CASCADE)
+    activo = models.BooleanField(default = True)
+    representante = models.ForeignKey(UserAccount, on_delete=models.CASCADE,related_name='representante_historial')
+    digitador = models.ForeignKey(UserAccount, on_delete=models.CASCADE, related_name='digitador_hostorial')
+    fecha = models.DateField(null=True, blank=True)
+    archivoDesignacion = models.FileField(upload_to='organigrama/', validators=[validate_pdf_size], null=True, blank=True)
+    def __str__(self):
+        return "{} * {} * {}".format(self.nombre, self.siglas,self.representante )
 
 
 

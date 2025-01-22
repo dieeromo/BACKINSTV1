@@ -3,7 +3,7 @@ from .models import Coor_Carrera,Coor_Institucionales,Otras_Comisiones
 from .models import BolsaEmpleo
 
 from .models import TipoDependencia, DependenciasInstitucionales, OcurrenciaDependencias, HistorialDependencias
-
+from . models import HistorialDependenciasInstitucionales
 
 class Coor_Carrera_Serializer(serializers.ModelSerializer):
     digitador = serializers.CharField(source='digitador.first_name', read_only=True)
@@ -39,6 +39,8 @@ class Bolsa_empleo_Serializer(serializers.ModelSerializer):
 
 ## DEPENDENCIAS
 class TipoDependencia_Serializer(serializers.ModelSerializer):
+    value = serializers.CharField(source='id', read_only=True)
+    label = serializers.CharField(source='nombre', read_only=True)
     class Meta:
         model = TipoDependencia
         fields = "__all__"
@@ -46,6 +48,9 @@ class TipoDependencia_Serializer(serializers.ModelSerializer):
 class DependenciasInstitucionales_Serializer(serializers.ModelSerializer):
     value = serializers.CharField(source='id', read_only=True)
     label = serializers.CharField(source='nombre', read_only=True)
+    tipo_name = serializers.CharField(source='tipo.nombre', read_only=True)
+    representante_name =serializers.CharField(source='representante.get_full_name', read_only=True)
+    
     class Meta:
         model = DependenciasInstitucionales
         fields = "__all__"
@@ -56,7 +61,13 @@ class OcurrenciaDependencia_Serializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class HistorialDependencia_Serializer(serializers.ModelSerializer):
+class HistorialDependencia_Serializer(serializers.ModelSerializer):  ## EN DESUSO
     class Meta:
         model = HistorialDependencias
+        fields = "__all__"
+
+
+class HistorialDependenciaInstitucional_Serializer(serializers.ModelSerializer):
+    class Meta:
+        model = HistorialDependenciasInstitucionales
         fields = "__all__"

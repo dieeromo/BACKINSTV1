@@ -11,8 +11,9 @@ from .models import BolsaEmpleo
 from .serializers import  Coor_Carrera_Serializer, Coor_Institucionales_Serializer, Otras_comisiones_Serializer
 from . serializers import Bolsa_empleo_Serializer
 
-from .models import DependenciasInstitucionales
-from .serializers import DependenciasInstitucionales_Serializer
+from .models import DependenciasInstitucionales, TipoDependencia, HistorialDependenciasInstitucionales
+from .serializers import DependenciasInstitucionales_Serializer, TipoDependencia_Serializer
+from . serializers import HistorialDependenciaInstitucional_Serializer
 
 @api_view(['GET'])
 #@permission_classes([IsAuthenticated])
@@ -56,3 +57,20 @@ class DependenciasInstitucionales_ViewSet(viewsets.ModelViewSet):
     serializer_class = DependenciasInstitucionales_Serializer
 router = routers.DefaultRouter()
 
+
+class TipoDependencias_Crud(viewsets.ModelViewSet):
+    queryset = TipoDependencia.objects.all().order_by('-id')
+    serializer_class = TipoDependencia_Serializer
+router = routers.DefaultRouter()
+
+
+class TipoDependencias_Crud(viewsets.ModelViewSet):
+    queryset = TipoDependencia.objects.all().order_by('-id')
+    serializer_class = TipoDependencia_Serializer
+router = routers.DefaultRouter()
+
+
+class HistorialDependenciaInsatitucional_Crud(viewsets.ModelViewSet):
+    queryset = HistorialDependenciasInstitucionales.objects.all().order_by('-id')
+    serializer_class = HistorialDependenciaInstitucional_Serializer
+router = routers.DefaultRouter()
