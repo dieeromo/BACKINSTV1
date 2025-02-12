@@ -4,7 +4,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
-
+from rest_framework.views import APIView
 
 from .models import Coor_Carrera, Coor_Institucionales, Otras_Comisiones
 from .models import BolsaEmpleo
@@ -74,3 +74,17 @@ class HistorialDependenciaInsatitucional_Crud(viewsets.ModelViewSet):
     queryset = HistorialDependenciasInstitucionales.objects.all().order_by('-id')
     serializer_class = HistorialDependenciaInstitucional_Serializer
 router = routers.DefaultRouter()
+
+
+
+class HistorialDependencia_dependencia_ApiView(APIView):
+    def get(self, request):
+        dependenciaid = request.GET.get('dependenciaid', None)
+        historial = HistorialDependenciasInstitucionales.objects.filter(dependencia__id = dependenciaid )  
+        
+        
+        serializer = HistorialDependenciaInstitucional_Serializer(historial, many=True)
+        
+        # Retorna los datos serializados como respuesta
+        return Response(serializer.data, status=200) 
+     

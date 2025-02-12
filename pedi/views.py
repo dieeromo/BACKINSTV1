@@ -72,7 +72,8 @@ class PoaData(APIView):
                         for actividad in actividades:
                             medios_verificacio = Medio_verificacion.objects.filter(actividad_meta=actividad)
                             for medio in medios_verificacio:
-                                indicadores_medios = IndicadorMedioVerificacion_Pedi.objects.filter(medio_verificacion = medio, entidadResponsable__siglas__icontains = entidadResponsableSigla )
+                                indicadores_medios = IndicadorMedioVerificacion_Pedi.objects.filter(medio_verificacion = medio, entidadResponsable__siglas__icontains = entidadResponsableSigla, )
+                                #indicadores_medios = IndicadorMedioVerificacion_Pedi.objects.filter(medio_verificacion = medio, entidadResponsable__siglas__icontains = entidadResponsableSigla, )
                                 for indicador in indicadores_medios:
                                         data.append({
                                             'pedi': pedi.nombre,
@@ -108,7 +109,7 @@ class PoaData(APIView):
         
                                      
         for datos in data:
-            poaData = Poa.objects.filter(indicadorPedi = datos['indicadorID'], anio=2024)
+            poaData = Poa.objects.filter(indicadorPedi = datos['indicadorID'], anio=anio)
             for p in poaData:
                 datos['idPoa'] = p.id
                 datos['anioPoa'] = p.anio

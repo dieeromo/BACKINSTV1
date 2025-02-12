@@ -75,7 +75,7 @@ class DependenciasInstitucionales(models.Model):
     fecha = models.DateField(null=True, blank=True)
     archivoDesignacion = models.FileField(upload_to='organigrama/', validators=[validate_pdf_size], null=True, blank=True)
     def __str__(self):
-        return "{} * {} * {}".format(self.nombre, self.siglas,self.representante )
+        return "{}".format(self.nombre,)
 
 class OcurrenciaDependencias(models.Model):
     nombre = models.TextField()

@@ -4,6 +4,7 @@ from .views import router
 from rest_framework import routers
 from . views import DependenciasInstitucionales_ViewSet,TipoDependencias_Crud, BolsaEmpleo_ViewSet
 from . views import HistorialDependenciaInsatitucional_Crud
+from .views import HistorialDependencia_dependencia_ApiView
 
 router = routers.DefaultRouter()
 router.register(r'bolsaEmpleo', BolsaEmpleo_ViewSet)
@@ -18,5 +19,8 @@ urlpatterns = [
 
     path('be/', include(router.urls)),
     path('be/lista/public/', views.listBolsaEmpleoPublic),
+    
+    
+    path('historial_dependencia_por_dependencia/', HistorialDependencia_dependencia_ApiView.as_view(), ),
 
 ]

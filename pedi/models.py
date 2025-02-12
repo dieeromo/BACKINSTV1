@@ -103,7 +103,7 @@ class IndicadorMedioVerificacion_Pedi(models.Model):
     digitador = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
     numeroPoa = models.IntegerField(default= 1)
     def __str__(self):
-        return "*NuPoa:{} *Ent:{} *Ind: {}".format(self.numeroPoa, self.entidadResponsable,self.nombre)
+        return "Ind{} #Poa:{} ".format(self.nombre, self.numeroPoa)
 
 
 class Poa(models.Model):
