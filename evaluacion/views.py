@@ -224,7 +224,199 @@ class Evaluacion_evidencia_fil_ModeloCriterio(APIView):
         
         return Response(data2)
     
+
+
+
+###########
     
+class Evaluacion_evidencia_fil_Indicador(APIView):
+    def get(self, request):
+        data = []
+        criterio_id = request.query_params.get('criterio_id', None)
+        subcriterio_id = request.query_params.get('subcriterio_id', None)
+        indicador_id = request.query_params.get('indicador_id', None)
+        #print('criterio',criterio_id)
+
+        #if modelo_id is not None:
+        #    modelos = ModeloEvaluacion.objects.filter(id=modelo_id)
+        #else:
+        #    modelos = ModeloEvaluacion.objects.all()
+        
+        modelos = ModeloEvaluacion.objects.all()
+    
+        criterios = CriterioEvaluacion.objects.filter(id=criterio_id)
+        subcriterios = SubCriterioEvaluacion.objects.filter(criterioEvaluacion=criterio_id)
+        indicadores = IndicadorEvaluacion.objects.filter(subCriterioEvaluacion=subcriterio_id)
+    
+               
+        evidencias = EvidenciaEvaluacion.objects.filter(indicadorEvaluacion=indicador_id).order_by('numeral')
+        for evidencia_i in evidencias:
+            responsable = indicadores[0].responsable
+            responsable_id = responsable.id if responsable else None
+            responsable_nombre = f"{responsable.first_name} {responsable.last_name}" if responsable else "Sin responsable"
+                            
+            corresponsable1 = indicadores[0].coresponsable1
+            corresponsable1_id = corresponsable1.id if corresponsable1 else None
+            corresponsable1_nombre = f"{corresponsable1.first_name} {corresponsable1.last_name}" if corresponsable1 else ""
+                            
+            corresponsable2 = indicadores[0].coresponsable2
+            corresponsable2_id = corresponsable2.id if corresponsable2 else None
+            corresponsable2_nombre = f"{corresponsable2.first_name} {corresponsable2.last_name}" if corresponsable2 else ""
+                            
+            corresponsable3 = indicadores[0].coresponsable3
+            corresponsable3_id = corresponsable3.id if corresponsable3 else None
+            corresponsable3_nombre = f"{corresponsable3.first_name} {corresponsable3.last_name}" if corresponsable3 else ""
+                            
+            corresponsable4 = indicadores[0].coresponsable4
+            corresponsable4_id = corresponsable4.id if corresponsable4 else None
+            corresponsable4_nombre = f"{corresponsable4.first_name} {corresponsable4.last_name}" if corresponsable4 else ""
+                        
+            corresponsable5 = indicadores[0].coresponsable5
+            corresponsable5_id = corresponsable5.id if corresponsable5 else None
+            corresponsable5_nombre = f"{corresponsable5.first_name} {corresponsable5.last_name}" if corresponsable5 else ""
+                            
+            data.append({
+                                #'modelo':modelo_i.nombre,
+                'criterio':'criterio_i.nombre',
+                'subcriterio':'subcriterio_i.nombre',
+                'indicador_numeral':'indicador_i.numeral',
+                'indicador':'indicador_i.nombre',
+                
+                'responsableIndicadorID':responsable_id,
+                'responsableIndicador': responsable_nombre,
+                'corresponsableIndicador1ID':corresponsable1_id,
+                'corresponsableIndicador1':corresponsable1_nombre,
+                                
+                'corresponsableIndicador2ID':corresponsable2_id,
+                'corresponsableIndicador2':corresponsable2_nombre,
+                                
+                'corresponsableIndicador3ID':corresponsable3_id,
+                'corresponsableIndicador3':corresponsable3_nombre,
+                                
+                'corresponsableIndicador4ID':corresponsable4_id,
+                'corresponsableIndicador4':corresponsable4_nombre,
+                'corresponsableIndicador5ID':corresponsable5_id,
+                'corresponsableIndicador5':corresponsable5_nombre,
+                               
+                'evidencia_numeral': evidencia_i.numeral,
+                'evidencia':evidencia_i.nombre,
+                'evidenciaID':evidencia_i.id,
+                                
+                                
+                })
+        data2 = []
+        for datos in data:
+            documentos = DocumentoEvaluacion.objects.filter(evidenciaEvaluacion=datos['evidenciaID']).order_by('numeral')
+            if not documentos:
+                
+                data2.append({
+                    'modelo':datos['modelo'],
+                    'criterio':datos['criterio'],
+                    'subcriterio':datos['subcriterio'],
+                    'indicador_numeral':datos['indicador_numeral'],
+                    'indicador':datos['indicador'],
+                    'responsableIndicadorID':datos['responsableIndicadorID'],
+                    'responsableIndicador': datos['responsableIndicador'],
+                    'corresponsableIndicador1ID':datos['corresponsableIndicador1ID'],
+                    'corresponsableIndicador1':datos['corresponsableIndicador1'],
+                    'corresponsableIndicador2ID':datos['corresponsableIndicador2ID'],
+                    'corresponsableIndicador2':datos['corresponsableIndicador2'],
+                    'corresponsableIndicador3ID':datos['corresponsableIndicador3ID'],
+                    'corresponsableIndicador3':datos['corresponsableIndicador3'],
+                    'corresponsableIndicador4ID':datos['corresponsableIndicador4ID'],
+                    'corresponsableIndicador4':datos['corresponsableIndicador4'],
+                    'corresponsableIndicador5ID':datos['corresponsableIndicador5ID'],
+                    'corresponsableIndicador5':datos['corresponsableIndicador5'],
+                    
+                    'evidencia_numeral': datos['evidencia_numeral'],
+                    'evidencia':datos['evidencia'],
+                    'evidenciaID':datos['evidenciaID'],
+                    'periodoAcademico': "",  
+                    'periodoAcademicoID': "", 
+                    'estado_documento':"0",
+                    'observacion_documento':""
+                      
+                                   
+                })
+            for documentos_i in documentos:
+                periodo = documentos_i.periodoAcademico
+                periodoAcademico_id = periodo.id if periodo else None
+                periodoAcademico = f"{periodo.nombre}" if periodo else ""
+                                
+    
+                data2.append({
+                    #'modelo':datos['modelo'],
+                    'criterio':datos['criterio'],
+                    'subcriterio':datos['subcriterio'],
+                    'indicador_numeral':datos['indicador_numeral'],
+                    'indicador':datos['indicador'],
+                    'responsableIndicadorID':datos['responsableIndicadorID'],
+                    'responsableIndicador': datos['responsableIndicador'],
+                    'corresponsableIndicador1ID':datos['corresponsableIndicador1ID'],
+                    'corresponsableIndicador1':datos['corresponsableIndicador1'],
+                    'corresponsableIndicador2ID':datos['corresponsableIndicador2ID'],
+                    'corresponsableIndicador2':datos['corresponsableIndicador2'],
+                    'corresponsableIndicador3ID':datos['corresponsableIndicador3ID'],
+                    'corresponsableIndicador3':datos['corresponsableIndicador3'],
+                    'corresponsableIndicador4ID':datos['corresponsableIndicador4ID'],
+                    'corresponsableIndicador4':datos['corresponsableIndicador4'],
+                    'corresponsableIndicador5ID':datos['corresponsableIndicador5ID'],
+                    'corresponsableIndicador5':datos['corresponsableIndicador5'],
+                    
+                    'evidencia_numeral': datos['evidencia_numeral'],
+                    'evidencia':datos['evidencia'],
+                    'evidenciaID':datos['evidenciaID'],
+                    'documento':documentos_i.nombre, 
+                    'documentoID':documentos_i.id,
+                    'archivo': str(documentos_i.archivo),
+                    'link':documentos_i.link,
+                    'responsable': documentos_i.responsable.first_name +' '+ documentos_i.responsable.last_name,    
+                    'responsableID': documentos_i.responsable.id, 
+                    'periodoAcademico': periodoAcademico, 
+                    'periodoAcademicoID': periodoAcademico_id,
+                    'estado_documento':documentos_i.estado2,
+                    'observacion_documento':documentos_i.observacion  
+                                 
+                })
+           
+        
+        return Response(data2)
+    
+    
+
+
+#####
+
+
+    
+class Subcriterio_por_criterio(APIView):
+    def get(self, request):
+        criterio_id = request.query_params.get('criterio_id', None)
+        subcriterios = SubCriterioEvaluacion.objects.filter(criterioEvaluacion=criterio_id)
+        data = []
+        for sub in subcriterios:
+            data.append({
+                'id':sub.id,
+                'nombre':sub.nombre,
+                'numeral': sub.numeral,
+            })
+        return Response(data)
+
+
+class Indicador_por_subcriterio(APIView):
+    def get(self, request):
+        subcriterio_id = request.query_params.get('subcriterio_id', None)
+        indicadores = IndicadorEvaluacion.objects.filter(subCriterioEvaluacion=subcriterio_id)
+        data = []
+        for sub in indicadores:
+            data.append({
+                'id':sub.id,
+                'nombre':sub.nombre,
+                'numeral': sub.numeral,
+            })
+        return Response(data)
+
+
         
 class Evaluacion_evidencia_fil_responsable(APIView):
     def get(self, request):
