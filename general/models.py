@@ -106,7 +106,7 @@ class HistorialDependenciasInstitucionales(models.Model):
     representante = models.ForeignKey(UserAccount, on_delete=models.CASCADE,related_name='representante_historial')
     digitador = models.ForeignKey(UserAccount, on_delete=models.CASCADE, related_name='digitador_hostorial')
     fecha = models.DateField(null=True, blank=True)
-    archivoDesignacion = models.FileField(upload_to='organigrama/', validators=[validate_pdf_size], null=True, blank=True)
+    archivoDesignacion = models.FileField(upload_to='organigrama/historial', validators=[validate_pdf_size], null=True, blank=True)
     def __str__(self):
         return "{} * {} * {}".format(self.nombre, self.siglas,self.representante )
 

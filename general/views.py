@@ -81,10 +81,7 @@ class HistorialDependencia_dependencia_ApiView(APIView):
     def get(self, request):
         dependenciaid = request.GET.get('dependenciaid', None)
         historial = HistorialDependenciasInstitucionales.objects.filter(dependencia__id = dependenciaid )  
-        
-        
         serializer = HistorialDependenciaInstitucional_Serializer(historial, many=True)
-        
         # Retorna los datos serializados como respuesta
         return Response(serializer.data, status=200) 
      

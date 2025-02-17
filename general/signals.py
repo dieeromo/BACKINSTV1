@@ -16,5 +16,6 @@ def crear_historial_dependencias(sender, instance, created, **kwargs):
         activo=instance.activo,
         representante=instance.representante,
         digitador=instance.digitador,
-        fecha=instance.fecha
+        fecha=instance.fecha,
+        archivoDesignacion  = instance.archivoDesignacion,
     )

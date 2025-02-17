@@ -68,6 +68,8 @@ class HistorialDependencia_Serializer(serializers.ModelSerializer):  ## EN DESUS
 
 
 class HistorialDependenciaInstitucional_Serializer(serializers.ModelSerializer):
+    representante_name =serializers.CharField(source='representante.get_full_name', read_only=True)
+    tipo_name = serializers.CharField(source='tipo.nombre', read_only=True)
     class Meta:
         model = HistorialDependenciasInstitucionales
         fields = "__all__"
