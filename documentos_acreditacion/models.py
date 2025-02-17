@@ -39,6 +39,6 @@ class Documentos_acreditacion(models.Model):
     archivo = models.FileField(upload_to='pdfs/', validators=[validate_pdf_size], null=True, blank=True)
 
     
-    def __str__(self):
-        return "{} @ {} @ {} @ {} ".format(self.id,self.indicador,self.evidencia,self.documento)
+    # def __str__(self):
+    #     return "{} @ {} @ {} @ {} ".format(self.id,self.indicador,self.evidencia,self.documento)
    
