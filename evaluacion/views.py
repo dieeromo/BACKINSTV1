@@ -279,8 +279,8 @@ class Evaluacion_evidencia_fil_Indicador(APIView):
                                 #'modelo':modelo_i.nombre,
                 'criterio':'criterio_i.nombre',
                 'subcriterio':'subcriterio_i.nombre',
-                'indicador_numeral':'indicador_i.numeral',
-                'indicador':'indicador_i.nombre',
+                'indicador_numeral':indicadores[0].numeral,
+                'indicador':indicadores[0].nombre,
                 
                 'responsableIndicadorID':responsable_id,
                 'responsableIndicador': responsable_nombre,
@@ -422,7 +422,7 @@ class Evaluacion_evidencia_fil_responsable(APIView):
     def get(self, request):
         data = []
         responsable_id = request.query_params.get('responsable_id', None)
-        documentos = DocumentoEvaluacion.objects.filter(responsable=responsable_id).order_by('numeral')
+        documentos = DocumentoEvaluacion.objects.filter(responsable=responsable_id).order_by('id')
         for documentos_i in documentos:
             evidencias = EvidenciaEvaluacion.objects.filter(id=documentos_i.evidenciaEvaluacion.id)
             for evidencias_i in evidencias:
