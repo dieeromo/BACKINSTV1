@@ -310,7 +310,7 @@ class Evaluacion_evidencia_fil_Indicador(APIView):
             if not documentos:
                 
                 data2.append({
-                    'modelo':datos['modelo'],
+                    #'modelo':datos['modelo'],
                     'criterio':datos['criterio'],
                     'subcriterio':datos['subcriterio'],
                     'indicador_numeral':datos['indicador_numeral'],
