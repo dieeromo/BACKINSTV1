@@ -14,7 +14,7 @@ admin.site.register(Medio_verificacion)
 
 class PoaAdmin(admin.ModelAdmin):
     list_display = ('id','anio','indicadorPedi','NumeroSeguimiento','totalAnio','pro1','pro2')
-    list_filter = ('NumeroSeguimiento','anio')
+    list_filter = ('NumeroSeguimiento','anio','indicadorPedi.entidadResponsable')
 admin.site.register(Poa, PoaAdmin)
 
 
