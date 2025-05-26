@@ -234,6 +234,27 @@ class BibliotecaPagination(PageNumberPagination):
     page_size_query_param = 'page_size'
     max_page_size = 2000
 
+
+class FilterObras_View(generics.ListAPIView):
+    serializer_class = obras_Serializer
+    pagination_class = BibliotecaPagination
+
+    def get_queryset(self):
+        # Tomamos los parámetros de la solicitud
+        titulo = self.request.query_params.get('titulo' )
+        ubicacionid = self.request.query_params.get('ubicacionid' )
+        queryset = Obras.objects.all()
+        #queryset = Obras.objects.all()
+
+        if titulo:
+            queryset = queryset.filter(titulo__icontains=titulo)
+        if ubicacionid:
+            queryset = queryset.filter(ubicacion__id=ubicacionid)
+
+        # Ordenamos por el campo 'id' en orden descendente
+        return queryset.order_by('-id')
+    
+
 # Vista con filtros personalizados
 class FilterObrasAutores_View(generics.ListAPIView):
     serializer_class = obrasAutores_Serializer
@@ -246,6 +267,7 @@ class FilterObrasAutores_View(generics.ListAPIView):
 
         # Construimos el queryset aplicando los filtros según los parámetros
         queryset = ObrasAutores.objects.all()
+        #queryset = Obras.objects.all()
 
         # Aplicamos los filtros solo si los parámetros tienen valor
         if autor:
@@ -290,9 +312,6 @@ def FilterTitulo_obras(request, titulo):
     listaObrasTitulo = Obras.objects.filter(titulo__icontains=tempo_titulo).order_by('-id') 
     serializer = obras_Serializer( listaObrasTitulo , many=True)
     return Response(serializer.data)
-    #except:
-    #    message = {'detalle': 'Algo esta mal en la peticion'}
-    #    return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])

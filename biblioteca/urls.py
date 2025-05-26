@@ -3,6 +3,7 @@ from . import views
 from rest_framework.routers import DefaultRouter
 from .views import UbicacionObras_ViewSet, CategoriasObras_ViewSet, TipoObras_ViewSet, AutoresObras_ViewSet
 from .views import router , FilterObrasAutores_View,Obras_crud, listAutores
+from .views import FilterObras_View
 #from .viewsFilter import ObrasAutores_Filter_View
 
 router = DefaultRouter()
@@ -43,5 +44,9 @@ urlpatterns = [
     #se utiliza para enviar lops datos
     path('todas/obras/autores/', FilterObrasAutores_View.as_view(),),
     #http://localhost:8002/biblioteca/todas/obras/autores/?autor=&obra=
+
+    path('filtro/obras/nuevo/', FilterObras_View.as_view(),),
+    #http://localhost:8002/biblioteca/filtro/obras/nuevo/?ubicacionid=20
+    
  
 ]
