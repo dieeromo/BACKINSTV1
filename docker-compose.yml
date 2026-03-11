@@ -1,7 +1,7 @@
 version: '3'
 services:
   dbINSTV1:
-    image: postgres
+    image: postgres:16
     container_name: postgres_container_INSTV1
     restart: always
     ports:
